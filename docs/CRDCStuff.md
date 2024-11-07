@@ -5,6 +5,7 @@
 - yaml
 - json
 - re
+- os
 ## Modules
 ### readYAML
 - **Usage:** readYAML(yamlfile)
@@ -13,6 +14,7 @@
 -- *yamlfile*: Full path to a valid yaml file
 - **Returns**
 -- A JSON object/Python Dictionary from the provided YAML file
+
 ### writeYAML
 - **Usage:** writeYAML(filename, json_object)
 - **Description:** Takes a filename and a json object like a Python dictionary and writes a yaml file
@@ -21,7 +23,8 @@
 -- *json_object*: A JSON object (like a Python dictionary) that will be converted to YAML and written to *filename*
 - **Returns**
 -- Not applicable
-## getCDERecord
+
+### getCDERecord
 - **Usage:** getCDERecord(cde_id, cde_version)
 - **Description:** Takes a CDE public ID and optional version and returns the full caDSR record.  If no version is provided, returns the latest version
 - **Parameters**
@@ -29,17 +32,19 @@
 -- *cde_version*: **OPTIONAL** The version number for the CDE
 - **Returns**
 -- If the query is successful (status code 200), the full JSON record from caDSR for the CDE and version.  The latest version is returned if no version number was supplied
--- If the query is unsuccessful (status code not 100), a string with the status code and error message
+-- If the query is unsuccessful (status code not 200), a string with the status code and error message
 -- If HTTP eexception, the requests HTTPError object
-## cleanSting
+
+### cleanSting
 - **Usage:** cleanString(inputstring, leavewhitespace = False):
 - **Description:** Removes non-ASCII and whitespaces characters from the inputstring.
 - **Parameters**
 -- *inputstring*: The string to be cleaned
 -- *leavewhitespace* **Optional** Accepted values True/False (default is False).  If set to True, whitespace is left
 - **Returns**
-- 
-## dhApiQuery
+-- The original string with all non-ASCII characters and (optionally) all whitespace removed
+
+### dhApiQuery
 - **Usage:** dhApiQuery(url, apitoken, query, variables = None)
 - **Description:** A method to run GraphQL queries and mutations against the Data Hub Submission Portal APIs.
 - **Parameters**
@@ -47,3 +52,15 @@
 -- *apitoken* The Data Hub API access token.
 -- *query* The GraphQL query
 -- *variables* **Optional**  The variables used in the query, if any.
+- **Returns**
+-- If query is successful (status code 200), a JSON object containing the elements specified in the query
+-- If the query is unsuccessful (status code not 200), a string with the status code and error message
+-- If HTTP eexception, the requests HTTPError object
+
+### dhAPICreds
+- **Usage:** dhAPICreds(tier)
+- **Description:** A method to get the Data Hub API URL and API Crendentials
+- **Parameters**
+-- *tier*  The tier for which the URL and credentials should be returned.  Allowed values are 'prod', 'stage', 'qa', 'qa2', 'dev', 'dev2'
+- **Returns**
+-- Two variables, URL and token.  Both are set to None if something went wrong
