@@ -74,6 +74,7 @@ def cleanString(inputstring, leavewhitespace = False):
         outputstring.rstrip()
     else:
         outputstring = re.sub(r'[\W]+', '', inputstring)
+    return outputstring
 
 def dhApiQuery(url, apitoken, query, variables = None):
     """
@@ -114,7 +115,7 @@ def dhAPICreds(tier):
     :return url: The URL for the requested tier
     :rtype url: string
     :return token: The API access token for the tier.
-    :rtype token: String
+    :rtype token: dictionary
     """
     url = None
     token = None
@@ -136,4 +137,4 @@ def dhAPICreds(tier):
     elif tier == 'dev2':
         url = 'https://hub-dev2.datacommons.cancer.gov/api/graphql'
         token = os.getenv('DEV2API')
-    return(url, token)
+    return {'url':url, 'token':token}

@@ -63,4 +63,4 @@
 - **Parameters**
 -- *tier*  The tier for which the URL and credentials should be returned.  Allowed values are 'prod', 'stage', 'qa', 'qa2', 'dev', 'dev2'
 - **Returns**
--- Two variables, URL and token.  Both are set to None if something went wrong
+-- A dictionary {'url': requested ULR, 'token': bearer token}
