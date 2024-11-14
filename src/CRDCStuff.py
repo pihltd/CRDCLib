@@ -29,7 +29,7 @@ def writeYAML(filename, jsonobj):
         yaml.dump(jsonobj, f)
     f.close()
 
-def getCDERecord(cde_id, cde_version=None):
+def getCDERecord(cde_id, cde_version=None, verbose=False):
     """
     Queries the caDSR API with a CDE identifier and optional version, returns the full JSON object
     #If no version is given, returns whatever the latest version is.
@@ -44,6 +44,8 @@ def getCDERecord(cde_id, cde_version=None):
     :return: If HTTP error, the requests.HTTPError object
     :rtype: request.HTTPError
     """
+    if verbose:
+        print(f"CDE ID:\t{cde_id}\tVersion:\t{cde_version}")
     if cde_version is None:
         url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cde_id)
     else:
