@@ -1,5 +1,5 @@
 import unittest
-from CRDCStuff import readYAML
+from CRDCLib import readYAML
 
 class TestReadYaml(unittest.TestCase):
     def test_readyaml(self):

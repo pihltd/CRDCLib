@@ -1,5 +1,5 @@
 import unittest
-from CRDCStuff import cleanString
+from CRDCLib import cleanString
 
 class TestCleanString(unittest.TestCase):
     def test_fullClean(self):
