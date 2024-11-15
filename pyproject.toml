@@ -1,3 +1,7 @@
+[tool.setuptools.packages.find]
+where = ["src/"]
+include = ["CRDCLib.CRDCLib", "CRDCLib.DHQueries"]
+
 [project]
 name = "CRDCLib"
 version = "0.0.1"
