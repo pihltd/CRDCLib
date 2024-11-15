@@ -1,0 +1,18 @@
+[project]
+name = "CRDCLib"
+version = "0.0.1"
+authors = [
+  { name="Todd Pihl", email="todd.pihl@nih.gov" },
+]
+description = "A collection of functions useful for interactive with parts of CRDC"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers=[
+        'Programming Language::Python::3',
+        'License::OSI Approved::Apache License 2.0',
+        'Operating System::OS Independent'
+    ]
+
+[project.urls]
+Homepage = "https://github.com/pihltd/CRDCLib"
+Issues = "https://github.com/pihltd/CRDCLib/issues"
