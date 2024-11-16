@@ -8,7 +8,7 @@ class TestDHAPICalls(unittest.TestCase):
 
     def test_dhAPICall(self):
         creds = crdclib.dhAPICreds('stage')
-        result = dhqueries.dhApiQuery(creds['url'], creds['token'], dhqueries.org_query)
+        result = crdclib.dhApiQuery(creds['url'], creds['token'], dhqueries.org_query)
         self.assertEqual(list(result.keys()), ['data'])
         self.assertIn('listApprovedStudiesOfMyOrganization', result['data'])
 
