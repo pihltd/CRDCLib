@@ -17,8 +17,8 @@ setup(
         "License :: OSI Approved :: Apache 2.0"
         "Programming Language :: Python :: 3"
     ],
-    package_dir={"":"src"},
-    packages=find_packages(where="src"),
+    package_dir={"":"src/CRDCLib"},
+    packages=find_packages(where="src/CRDCLib"),
     python_requires=">=3.6",
     install_requires=["requests","pyyaml"],
     project_urls={
