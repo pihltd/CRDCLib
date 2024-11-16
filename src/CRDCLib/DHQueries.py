@@ -14,6 +14,7 @@ mutation CreateBatch(
 }
 """
 
+
 list_sub_query = """
 query ListSubmissions($status: String!){
   listSubmissions(status: $status){
@@ -34,6 +35,7 @@ query ListSubmissions($status: String!){
   }
 }
 """
+
 
 create_submission_query = """
 mutation CreateNewSubmission(
@@ -63,6 +65,7 @@ mutation CreateNewSubmission(
   }
 }"""
 
+
 org_query = """
 {
   listApprovedStudiesOfMyOrganization{
@@ -74,6 +77,7 @@ org_query = """
   }
 }
 """
+
 
 qc_check_query = """
 query GetQCResults(

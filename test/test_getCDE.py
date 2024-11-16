@@ -1,8 +1,10 @@
 import unittest
 from CRDCLib import getCDERecord
 
+
 class TestGetCDERecord(unittest.TestCase):
-    
+
+
     def test_getCDERecord(self):
         longname = "Electronic Data File Size Integer"
         cde_id = 11479876
@@ -13,6 +15,6 @@ class TestGetCDERecord(unittest.TestCase):
         badref = getCDERecord(bad_id, cde_version)
         self.assertEqual(badref['status'], 'error')
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     unittest.main(verbosity=2)

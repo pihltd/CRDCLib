@@ -1,8 +1,10 @@
 import unittest
 from CRDCLib import cleanString
 
+
 class TestCleanString(unittest.TestCase):
-    
+
+
     def test_fullClean(self):
         teststring = "This is # Test\t\r\n!@#$%^&*()"
         self.assertEqual(cleanString(teststring), "ThisisTest")

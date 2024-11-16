@@ -5,8 +5,8 @@ import json
 import re
 import os
 
+
 def readYAML(yamlfile):
-    
 
     """
     This method reads a YAML file and returns a JSON object
@@ -20,8 +20,8 @@ def readYAML(yamlfile):
         yamljson = yaml.load(f, Loader=yaml.FullLoader)
     return yamljson
 
-def writeYAML(filename, jsonobj):
 
+def writeYAML(filename, jsonobj):
 
     """
     Takes a filename and JSON object/dictionary and writes out a basic yaml file
@@ -35,8 +35,8 @@ def writeYAML(filename, jsonobj):
         yaml.dump(jsonobj, f)
     f.close()
 
-def getCDERecord(cde_id, cde_version=None, verbose=False):
 
+def getCDERecord(cde_id, cde_version=None, verbose=False):
 
     """
     Queries the caDSR API with a CDE identifier and optional version, returns the full JSON object
@@ -70,8 +70,8 @@ def getCDERecord(cde_id, cde_version=None, verbose=False):
     else:
         return (f"Error Code: {results.status_code}\n{results.content}")
 
-def cleanString(inputstring, leavewhitespace=False):
 
+def cleanString(inputstring, leavewhitespace=False):
 
     """
     Removes non-printing characters and whitespaces from strings
@@ -90,8 +90,8 @@ def cleanString(inputstring, leavewhitespace=False):
         outputstring = re.sub(r'[\W]+', '', inputstring)
     return outputstring
 
-def dhApiQuery(url, apitoken, query, variables=None):
 
+def dhApiQuery(url, apitoken, query, variables=None):
 
     """
     Runs queries against the Data Hub Submission Portal API
@@ -124,8 +124,8 @@ def dhApiQuery(url, apitoken, query, variables=None):
     except requests.exceptions.HTTPError as e:
         return (f"HTTPError: {e}")
  
-def dhAPICreds(tier):
 
+def dhAPICreds(tier):
 
     """
     A simple way to retrieve the Data Hub submission URLs and API tokens
