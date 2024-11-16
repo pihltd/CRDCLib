@@ -1,8 +1,8 @@
 
 create_batch_query = """
 mutation CreateBatch(
-    $submissionID: ID!, 
-    $type: String!, 
+    $submissionID: ID!,
+    $type: String!,
     $file: [FileInput]) {
   createBatch(submissionID: $submissionID, type: $type, files: $file) {
     _id

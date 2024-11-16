@@ -7,6 +7,11 @@ src/CRDCLib/CRDCLib.egg-info/SOURCES.txt
 src/CRDCLib/CRDCLib.egg-info/dependency_links.txt
 src/CRDCLib/CRDCLib.egg-info/requires.txt
 src/CRDCLib/CRDCLib.egg-info/top_level.txt
+src/CRDCLib/CRDCLib.egg-info/PKG-INFO
+src/CRDCLib/CRDCLib.egg-info/SOURCES.txt
+src/CRDCLib/CRDCLib.egg-info/dependency_links.txt
+src/CRDCLib/CRDCLib.egg-info/requires.txt
+src/CRDCLib/CRDCLib.egg-info/top_level.txt
 test/test_cleanstring.py
 test/test_dhAPICall.py
 test/test_getAPICreds.py

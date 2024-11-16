@@ -6,6 +6,7 @@ import re
 import os
 
 def readYAML(yamlfile):
+    
 
     """
     This method reads a YAML file and returns a JSON object
@@ -21,6 +22,7 @@ def readYAML(yamlfile):
 
 def writeYAML(filename, jsonobj):
 
+
     """
     Takes a filename and JSON object/dictionary and writes out a basic yaml file
     :param filename: A full path to the output file
@@ -34,6 +36,7 @@ def writeYAML(filename, jsonobj):
     f.close()
 
 def getCDERecord(cde_id, cde_version=None, verbose=False):
+
 
     """
     Queries the caDSR API with a CDE identifier and optional version, returns the full JSON object
@@ -67,7 +70,8 @@ def getCDERecord(cde_id, cde_version=None, verbose=False):
     else:
         return (f"Error Code: {results.status_code}\n{results.content}")
 
-def cleanString(inputstring, leavewhitespace = False):
+def cleanString(inputstring, leavewhitespace=False):
+
 
     """
     Removes non-printing characters and whitespaces from strings
@@ -86,7 +90,8 @@ def cleanString(inputstring, leavewhitespace = False):
         outputstring = re.sub(r'[\W]+', '', inputstring)
     return outputstring
 
-def dhApiQuery(url, apitoken, query, variables = None):
+def dhApiQuery(url, apitoken, query, variables=None):
+
 
     """
     Runs queries against the Data Hub Submission Portal API
@@ -118,8 +123,9 @@ def dhApiQuery(url, apitoken, query, variables = None):
             return (f"Status Code: {result.status_code}\n{result.content}")
     except requests.exceptions.HTTPError as e:
         return (f"HTTPError: {e}")
-    
+ 
 def dhAPICreds(tier):
+
 
     """
     A simple way to retrieve the Data Hub submission URLs and API tokens
@@ -151,4 +157,4 @@ def dhAPICreds(tier):
     elif tier == 'dev2':
         url = 'https://hub-dev2.datacommons.cancer.gov/api/graphql'
         token = os.getenv('DEV2API')
-    return {'url':url, 'token':token}
+    return {'url': url, 'token': token}
