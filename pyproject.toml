@@ -1,6 +1,6 @@
 [tool.setuptools.packages.find]
-where = ["src/"]
-include = ["CRDCLib.CRDCLib", "CRDCLib.DHQueries"]
+where = ["src.CRDCLib"]
+include = ["CRDCLib", "DHQueries"]
 
 [project]
 name = "CRDCLib"
@@ -11,6 +11,7 @@ authors = [
 description = "A collection of functions useful for interactive with parts of CRDC"
 readme = "README.md"
 requires-python = ">=3.8"
+dependencies = ["requests", "pyyaml"]
 classifiers=[
         'Programming Language::Python::3',
         'License::OSI Approved::Apache License 2.0',
