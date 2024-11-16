@@ -8,8 +8,8 @@ Author-email: Todd Pihl <todd.pihl@nih.gov>
 Project-URL: Homepage, https://github.com/pihltd/CRDCLib
 Project-URL: Issues, https://github.com/pihltd/CRDCLib/issues
 Classifier: Programming Language::Python::3
-Classifier: License::OSI Approved::Apache License 2.0
-Classifier: Operating System::OS Independent
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
 Requires-Python: >=3.6
 Description-Content-Type: text/markdown
 License-File: LICENSE
