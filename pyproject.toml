@@ -1,9 +1,9 @@
 [tool.setuptools.packages.find]
-where = ["src.CRDCLib"]
-include = ["CRDCLib", "DHQueries"]
+where = ["src.crdclib"]
+include = ["crdclib", "dhqueries"]
 
 [project]
-name = "CRDCLib"
+name = "crdclib"
 version = "0.0.1"
 authors = [
   { name="Todd Pihl", email="todd.pihl@nih.gov" },

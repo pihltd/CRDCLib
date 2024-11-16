@@ -1,14 +1,14 @@
 import unittest
-import CRDCLib
-import DHQueries
+import crdclib
+import dhqueries
 
 
 class TestDHAPICalls(unittest.TestCase):
 
 
     def test_dhAPICall(self):
-        creds = CRDCLib.dhAPICreds('stage')
-        result = CRDCLib.dhApiQuery(creds['url'], creds['token'], DHQueries.org_query)
+        creds = crdclib.dhAPICreds('stage')
+        result = dhqueries.dhApiQuery(creds['url'], creds['token'], dhqueries.org_query)
         self.assertEqual(list(result.keys()), ['data'])
         self.assertIn('listApprovedStudiesOfMyOrganization', result['data'])
 

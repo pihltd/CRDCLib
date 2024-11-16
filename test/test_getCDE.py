@@ -1,5 +1,5 @@
 import unittest
-from CRDCLib import getCDERecord
+from crdclib import getCDERecord
 
 
 class TestGetCDERecord(unittest.TestCase):

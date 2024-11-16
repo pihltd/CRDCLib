@@ -5,7 +5,7 @@ thispath = pathlib.Path(__file__).parent.resolve()
 long_description = thispath / "README.md"
 
 setup(
-    name="CRDCLib",
+    name="crdclib",
     version="0.0.1",
     description="Random routines I use in CRDC work",
     long_description=long_description,
@@ -17,8 +17,8 @@ setup(
         "License :: OSI Approved :: Apache 2.0"
         "Programming Language :: Python :: 3"
     ],
-    package_dir={"": "src/CRDCLib"},
-    packages=find_packages(where="src/CRDCLib"),
+    package_dir={"": "src/crdclib"},
+    packages=find_packages(where="src/crdclib"),
     python_requires=">=3.6",
     install_requires=["requests", "pyyaml"],
     project_urls={

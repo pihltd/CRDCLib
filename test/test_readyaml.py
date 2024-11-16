@@ -1,5 +1,5 @@
 import unittest
-from CRDCLib import readYAML
+from crdclib import readYAML
 from pathlib import Path
 
 

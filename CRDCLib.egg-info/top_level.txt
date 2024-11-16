@@ -1,3 +1,0 @@
-CRDCLib
-docs
-test

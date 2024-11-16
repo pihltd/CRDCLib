@@ -1,6 +1,6 @@
 import unittest
 import os
-from CRDCLib import dhAPICreds
+from crdclib import dhAPICreds
 
 
 class TestGetCreds(unittest.TestCase):
