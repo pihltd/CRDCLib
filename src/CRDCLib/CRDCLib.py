@@ -6,6 +6,7 @@ import re
 import os
 
 def readYAML(yamlfile):
+
     """
     This method reads a YAML file and returns a JSON object
     :param yamlfile: A full path to the yaml file to be parsed
@@ -13,11 +14,13 @@ def readYAML(yamlfile):
     :return: A JSON object/dictionary representing the YAML file content
     :rtype: dictionary
     """
+
     with open(yamlfile) as f:
         yamljson = yaml.load(f, Loader=yaml.FullLoader)
     return yamljson
 
 def writeYAML(filename, jsonobj):
+
     """
     Takes a filename and JSON object/dictionary and writes out a basic yaml file
     :param filename: A full path to the output file
@@ -25,11 +28,13 @@ def writeYAML(filename, jsonobj):
     :param jsonobj: A dictionary to be written as YAML
     :type jsonobj: Dictionary
     """
+
     with open(filename, 'w') as f:
         yaml.dump(jsonobj, f)
     f.close()
 
 def getCDERecord(cde_id, cde_version=None, verbose=False):
+
     """
     Queries the caDSR API with a CDE identifier and optional version, returns the full JSON object
     #If no version is given, returns whatever the latest version is.
@@ -44,15 +49,16 @@ def getCDERecord(cde_id, cde_version=None, verbose=False):
     :return: If HTTP error, the requests.HTTPError object
     :rtype: request.HTTPError
     """
+
     if verbose:
         print(f"CDE ID:\t{cde_id}\tVersion:\t{cde_version}")
     if cde_version is None:
         url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cde_id)
     else:
         url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cde_id)+"?version="+str(cde_version)
-    headers = {'accept':'application/json'}
+    headers = {'accept': 'application/json'}
     try:
-        results = requests.get(url, headers = headers)
+        results = requests.get(url, headers=headers)
     except requests.exceptions.HTTPError as e:
         return (f"HTTPError:\n{e}")
     if results.status_code == 200:
@@ -62,6 +68,7 @@ def getCDERecord(cde_id, cde_version=None, verbose=False):
         return (f"Error Code: {results.status_code}\n{results.content}")
 
 def cleanString(inputstring, leavewhitespace = False):
+
     """
     Removes non-printing characters and whitespaces from strings
     :param inputstring: The string to be processed
@@ -71,6 +78,7 @@ def cleanString(inputstring, leavewhitespace = False):
     :return: Processed string
     :rtype: String
     """
+
     if leavewhitespace:
         outputstring = re.sub(r'[\n\r\t?]+', '', inputstring)
         outputstring.rstrip()
@@ -79,6 +87,7 @@ def cleanString(inputstring, leavewhitespace = False):
     return outputstring
 
 def dhApiQuery(url, apitoken, query, variables = None):
+
     """
     Runs queries against the Data Hub Submission Portal API
     :param url: URL of the Submission Portal API
@@ -96,12 +105,13 @@ def dhApiQuery(url, apitoken, query, variables = None):
     :return: If HTTP error, the requests.HTTPError object
     :rtype: request.HTTPError
     """
+
     headers = {"Authorization": f"Bearer {apitoken}"}
     try:
         if variables is None:
-            result = requests.post(url = url, headers = headers, json={"query": query})
+            result = requests.post(url=url, headers=headers, json={"query": query})
         else:
-            result = requests.post(url = url, headers = headers, json = {"query":query, "variables":variables})
+            result = requests.post(url=url, headers=headers, json={"query": query, "variables": variables})
         if result.status_code == 200:
             return result.json()
         else:
@@ -110,6 +120,7 @@ def dhApiQuery(url, apitoken, query, variables = None):
         return (f"HTTPError: {e}")
     
 def dhAPICreds(tier):
+
     """
     A simple way to retrieve the Data Hub submission URLs and API tokens
     :param tier: A string for the tier to return.  Must be one of prod, stage, qa, qa2, dev, dev2
@@ -119,6 +130,7 @@ def dhAPICreds(tier):
     :return token: The API access token for the tier.
     :rtype token: dictionary
     """
+
     url = None
     token = None
     if tier == 'prod':
