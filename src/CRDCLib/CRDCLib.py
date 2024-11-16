@@ -157,4 +157,7 @@ def dhAPICreds(tier):
     elif tier == 'dev2':
         url = 'https://hub-dev2.datacommons.cancer.gov/api/graphql'
         token = os.getenv('DEV2API')
+    elif tier == 'localtest':
+        url = 'https://this.is.a.test/url/graphql'
+        token = os.getenv('LOCALTESTAPI')
     return {'url': url, 'token': token}

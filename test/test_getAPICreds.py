@@ -7,10 +7,9 @@ class TestGetCreds(unittest.TestCase):
 
 
     def test_getCreds(self):
-        check_token = os.getenv('DEV2API')
-        check_url = 'https://hub-dev2.datacommons.cancer.gov/api/graphql'
-        check_dict = {'url': check_url, 'token': check_token}
-        self.assertEqual(dhAPICreds('dev2'), check_dict)
+        os.environ['LOCALTESTAPI'] = 'local_test_environment_variable'
+        check_dict = {'url':'https://this.is.a.test/url/graphql', 'token': 'local_test_environment_variable'}
+        self.assertEqual(dhAPICreds('localtest'), check_dict)
 
 
 if __name__ == "__main__":
