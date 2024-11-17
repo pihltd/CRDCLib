@@ -5,7 +5,6 @@ from pathlib import Path
 
 class TestReadYaml(unittest.TestCase):
 
-
     def test_readyaml(self):
         TESTPATH = Path(__file__).parent
         answer = {'first': ['second', 'third', 'fourth'], 'fifth': {'sixth': 'seventh'}}

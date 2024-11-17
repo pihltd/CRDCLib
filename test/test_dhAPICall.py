@@ -5,7 +5,6 @@ import dhqueries
 
 class TestDHAPICalls(unittest.TestCase):
 
-
     def test_dhAPICall(self):
         creds = crdclib.dhAPICreds('stage')
         result = crdclib.dhApiQuery(creds['url'], creds['token'], dhqueries.org_query)

@@ -123,7 +123,7 @@ def dhApiQuery(url, apitoken, query, variables=None):
             return (f"Status Code: {result.status_code}\n{result.content}")
     except requests.exceptions.HTTPError as e:
         return (f"HTTPError: {e}")
- 
+
 
 def dhAPICreds(tier):
 

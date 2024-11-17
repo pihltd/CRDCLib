@@ -4,7 +4,6 @@ from crdclib import getCDERecord
 
 class TestGetCDERecord(unittest.TestCase):
 
-
     def test_getCDERecord(self):
         longname = "Electronic Data File Size Integer"
         cde_id = 11479876
