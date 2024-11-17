@@ -6,9 +6,9 @@ crdclib.egg-info/SOURCES.txt
 crdclib.egg-info/dependency_links.txt
 crdclib.egg-info/requires.txt
 crdclib.egg-info/top_level.txt
-src/__init__.py
-src/crdclib.py
-src/dhqueries.py
+src/crdclib/__init__.py
+src/crdclib/crdclib.py
+src/crdclib/dhqueries.py
 test/test_cleanstring.py
 test/test_dhAPICall.py
 test/test_getAPICreds.py

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: crdclib
-Version: 0.0.3
+Version: 0.0.4
 Summary: A collection of functions useful for interactive with parts of CRDC
 Author-email: Todd Pihl <todd.pihl@gmail.com>
 Project-URL: Homepage, https://github.com/pihltd/CRDCLib
