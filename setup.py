@@ -6,7 +6,7 @@ long_description = thispath / "README.md"
 
 setup(
     name="crdclib",
-    version="0.0.1",
+    version="0.0.2",
     description="Random routines I use in CRDC work",
     long_description=long_description,
     url="https://github.com/pihltd/CRDCLib",

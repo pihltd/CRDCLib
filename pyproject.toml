@@ -4,7 +4,7 @@ include = ["crdclib", "dhqueries"]
 
 [project]
 name = "crdclib"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Todd Pihl", email="todd.pihl@nih.gov" },
 ]
