@@ -84,10 +84,10 @@ def cleanString(inputstring, leavewhitespace=False):
     """
 
     if leavewhitespace:
-        outputstring = re.sub(r'[\n\r\t?]+', '', inputstring)
+        outputstring = re.sub(r"[\n\r\t?]+", '', inputstring)
         outputstring.rstrip()
     else:
-        outputstring = re.sub(r'[\W]+', '', inputstring)
+        outputstring = re.sub(r"[\W]+", '', inputstring)
     return outputstring
 
 
