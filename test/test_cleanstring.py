@@ -1,14 +1,14 @@
 import unittest
-from crdclib import cleanString
+from crdclib import crdclib as cl
 
 
 class TestCleanString(unittest.TestCase):
 
     def test_fullClean(self):
         teststring = "This is # Test\t\r\n!@#$%^&*()"
-        self.assertEqual(cleanString(teststring), "ThisisTest")
-        self.assertEqual(cleanString(teststring, False), "ThisisTest")
-        self.assertEqual(cleanString(teststring, True), "This is # Test!@#$%^&*()")
+        self.assertEqual(cl.cleanString(teststring), "ThisisTest")
+        self.assertEqual(cl.cleanString(teststring, False), "ThisisTest")
+        self.assertEqual(cl.cleanString(teststring, True), "This is # Test!@#$%^&*()")
 
 if __name__ == "__main__":
 

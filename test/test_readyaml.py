@@ -1,5 +1,5 @@
 import unittest
-from crdclib import readYAML
+from crdclib import crdclib as cl
 from pathlib import Path
 
 
@@ -9,7 +9,7 @@ class TestReadYaml(unittest.TestCase):
         TESTPATH = Path(__file__).parent
         answer = {'first': ['second', 'third', 'fourth'], 'fifth': {'sixth': 'seventh'}}
         yamltestfile = TESTPATH / 'yamltestfile.yml'
-        self.assertEqual(readYAML(yamltestfile), answer)
+        self.assertEqual(cl.readYAML(yamltestfile), answer)
 
 
 if __name__ == "__main__":

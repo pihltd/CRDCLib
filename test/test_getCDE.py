@@ -1,5 +1,5 @@
 import unittest
-from crdclib import getCDERecord
+from crdclib import crdclib as cl
 
 
 class TestGetCDERecord(unittest.TestCase):
@@ -8,10 +8,10 @@ class TestGetCDERecord(unittest.TestCase):
         longname = "Electronic Data File Size Integer"
         cde_id = 11479876
         cde_version = 1
-        cderef = getCDERecord(cde_id, cde_version)
+        cderef = cl.getCDERecord(cde_id, cde_version)
         self.assertEqual(cderef['DataElement']['longName'], longname)
         bad_id = "11479876$"
-        badref = getCDERecord(bad_id, cde_version)
+        badref = cl.getCDERecord(bad_id, cde_version)
         self.assertEqual(badref['status'], 'error')
 
 
