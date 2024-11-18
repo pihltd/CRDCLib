@@ -10,6 +10,6 @@ class TestCleanString(unittest.TestCase):
         self.assertEqual(cl.cleanString(teststring, False), "ThisisTest")
         self.assertEqual(cl.cleanString(teststring, True), "This is # Test!@#$%^&*()")
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     unittest.main(verbosity=2)

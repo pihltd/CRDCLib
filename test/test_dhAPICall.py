@@ -5,7 +5,7 @@ import os
 
 
 class TestDHAPICalls(unittest.TestCase):
-    
+
     IN_GITHUB = os.getenv("GITHUB_ACTIONS")
 
     @unittest.skipIf(IN_GITHUB, "Doesn't run in Github")
