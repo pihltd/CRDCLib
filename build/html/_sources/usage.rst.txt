@@ -19,8 +19,3 @@ Functions
 .. autofunction:: crdclib.cleanString
 .. autofunction:: crdclib.dhApiQuery
 .. autofunction:: crdclib.dhAPICreds
-
-Queries
--------
-
-.. autofunction:: dhquery.create_batch_query

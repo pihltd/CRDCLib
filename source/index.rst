@@ -6,13 +6,28 @@
 crdclib documentation
 =====================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+crdclib is a small collections of Python functions and Submission Portal GraphQL queries that I find useful.
+Use at your own risk.
+
+`GitHub repository <https://github.com/pihltd/CRDCLib>`_
+
+License: Apache 2.0
+
+Installation
+------------
+
+To use crdclib, first install it using pip:
+
+.. code-block:: console
+
+   (.venv) $ pip install crdclib
+
+.. Add your content using ``reStructuredText`` syntax. See the
+   `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
+   documentation for details.
 
 
 .. toctree::
    usage
    :maxdepth: 2
    :caption: Contents:
-
