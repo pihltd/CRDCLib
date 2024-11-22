@@ -9,11 +9,14 @@ import os
 def readYAML(yamlfile):
 
     """
+
     This method reads a YAML file and returns a JSON object
+
     :param yamlfile: A full path to the yaml file to be parsed
     :type yamlfile: String
     :return: A JSON object/dictionary representing the YAML file content
     :rtype: dictionary
+
     """
 
     with open(yamlfile) as f:
@@ -24,11 +27,14 @@ def readYAML(yamlfile):
 def writeYAML(filename, jsonobj):
 
     """
+
     Takes a filename and JSON object/dictionary and writes out a basic yaml file
+
     :param filename: A full path to the output file
     :type filename: String
     :param jsonobj: A dictionary to be written as YAML
     :type jsonobj: Dictionary
+
     """
 
     with open(filename, 'w') as f:
@@ -39,8 +45,9 @@ def writeYAML(filename, jsonobj):
 def getCDERecord(cde_id, cde_version=None, verbose=False):
 
     """
-    Queries the caDSR API with a CDE identifier and optional version, returns the full JSON object
-    #If no version is given, returns whatever the latest version is.
+
+    Queries the caDSR API with a CDE identifier and optional version, returns the full JSON object.  If no version is given, returns whatever the latest version is.
+
     :param cde_id: CDE Public identifier
     :type cde_id: Integer
     :param cde_version: The version of the CDE to be queried.  If not supplied the latest version will be returned
@@ -51,6 +58,7 @@ def getCDERecord(cde_id, cde_version=None, verbose=False):
     :rtype: string
     :return: If HTTP error, the requests.HTTPError object
     :rtype: request.HTTPError
+
     """
 
     if verbose:
@@ -73,14 +81,17 @@ def getCDERecord(cde_id, cde_version=None, verbose=False):
 
 def cleanString(inputstring, leavewhitespace=False):
 
-    """
+    r"""
+
     Removes non-printing characters and whitespaces from strings
+
     :param inputstring: The string to be processed
     :type intputstring: String
     :param leavewhitespace: Boolean, if True, uses regex [\n\r\t?]+.  If False, uses regex [\W]+
     :type leavewhitespace: Boolean, optional, default False
     :return: Processed string
     :rtype: String
+
     """
 
     if leavewhitespace:
@@ -94,7 +105,9 @@ def cleanString(inputstring, leavewhitespace=False):
 def dhApiQuery(url, apitoken, query, variables=None):
 
     """
+
     Runs queries against the Data Hub Submission Portal API
+
     :param url: URL of the Submission Portal API
     :type url: URL
     :param apitoken: API Access token obtained from the Submission Portal
@@ -109,6 +122,7 @@ def dhApiQuery(url, apitoken, query, variables=None):
     :rtype: string
     :return: If HTTP error, the requests.HTTPError object
     :rtype: request.HTTPError
+
     """
 
     headers = {"Authorization": f"Bearer {apitoken}"}
@@ -128,13 +142,16 @@ def dhApiQuery(url, apitoken, query, variables=None):
 def dhAPICreds(tier):
 
     """
+
     A simple way to retrieve the Data Hub submission URLs and API tokens
+
     :param tier: A string for the tier to return.  Must be one of prod, stage, qa, qa2, dev, dev2
     :type tier: String
     :return url: The URL for the requested tier
     :rtype url: string
     :return token: The API access token for the tier.
     :rtype token: dictionary
+
     """
 
     url = None
