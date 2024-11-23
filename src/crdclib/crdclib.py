@@ -148,9 +148,9 @@ def dhAPICreds(tier):
     :param tier: A string for the tier to return.  Must be one of prod, stage, qa, qa2, dev, dev2
     :type tier: String
     :return url: The URL for the requested tier
-    :rtype url: string
+    :rtype: URL
     :return token: The API access token for the tier.
-    :rtype token: dictionary
+    :rtype: dictionary
 
     """
 

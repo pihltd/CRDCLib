@@ -3,6 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. https://stackoverflow.com/questions/61374995/sphinx-with-autodoc-duplicate-object-description-warning-when-grouping-members
+
 crdclib documentation
 =====================
 
@@ -26,8 +28,12 @@ To use crdclib, first install it using pip:
    `reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
    documentation for details.
 
-
 .. toctree::
-   usage
-   :maxdepth: 2
-   :caption: Contents:
+    :maxdepth: 2
+    .. automodule:: crdclib
+    :no-members:
+   .. automodule:: dhqueries
+      :no-members:
+
+   crdclib
+   dhqueries

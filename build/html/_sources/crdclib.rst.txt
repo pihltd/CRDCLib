@@ -1,29 +1,14 @@
 crdclib package
 ===============
 
-Submodules
-----------
-
 crdclib.crdclib module
 ----------------------
 
-.. automodule:: crdclib.crdclib
-   :members:
-   :undoc-members:
-   :show-inheritance:
+.. currentmodule:: crdclib
+.. autofunction:: readYAML
+.. autofunction:: writeYAML
+.. autofunction:: getCDERecord
+.. autofunction:: cleanString
+.. autofunction:: dhApiQuery
+.. autofunction:: dhAPICreds
 
-crdclib.dhqueries module
-------------------------
-
-.. automodule:: crdclib.dhqueries
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: crdclib
-   :members:
-   :undoc-members:
-   :show-inheritance:
