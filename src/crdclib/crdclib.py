@@ -102,6 +102,44 @@ def cleanString(inputstring, leavewhitespace=False):
     return outputstring
 
 
+
+def runBentoAPIQuery(url, query, variables=None):
+    
+    """
+    Runs a GrpahQL Query against the Bento instance specified in the URL
+    
+    :param url: URL of the Bento instance API
+    :type url: URL
+    :param query: A valid GraphQL query
+    :type query: String
+    :param variables: a JSON object containing any variables for the provided query
+    :type variables: dictionary, optional
+    :return: If status_code == 200, a JSON object that is the full query response
+    :rtype: dictionary
+    :return: If status_code != 200, a string with error code and message
+    :rtype: string
+    :return: If HTTP error, the requests.HTTPError object
+    :rtype: request.HTTPError
+    """
+    
+    headers = {'accept': 'application/json'}
+    try:
+        if variables is None:
+            results = requests.post(url, headers=headers, json={'query': query})
+        else:
+            results = requests.post(url, headers=headers, json={'query': query, 'variables': variables})
+    except requests.exceptions.HTTPError as e:
+        return (f"HTTPError:\n{e}")
+        
+    if results.status_code == 200:
+        results = json.loads(results.content.decode())
+        return results
+    else:
+        return (f"Error Code: {results.status_code}\n{results.content}")
+
+
+
+
 def dhApiQuery(url, apitoken, query, variables=None):
 
     """
