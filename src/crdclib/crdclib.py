@@ -139,6 +139,40 @@ def runBentoAPIQuery(url, query, variables=None):
 
 
 
+def fullRunBentoAPIQuery(url, query, variables):
+    """
+    Runs a GrpahQL Query against the Bento instance specified in the URL and
+    will keep querying until there are no more results.
+    
+     Note: The query and the variables MUST includ "first" and "offset"
+    
+    :param url: URL of the Bento instance API
+    :type url: URL
+    :param query: A valid GraphQL query
+    :type query: String
+    :param variables: a JSON object containing any variables for the provided query
+    :type variables: dictionary, optional
+    :return: If status_code == 200, a pandas dataframe
+    :rtype: dataframe
+    :return: If status_code != 200, a string with error code and message
+    :rtype: string
+    :return: If HTTP error, the requests.HTTPError object
+    :rtype: request.HTTPError
+    """
+    # Safety check
+    if 'first' not in variables:
+        return None
+    elif 'offset' not in variables:
+        return None
+    else:
+        headers = {'accept': 'application/json'}
+    
+    #ISSUES:
+    # How to determine if there are more entries
+    # Need to increment offset varialbe
+    # How to determine column headers
+    # And/or how to load dataframe
+
 
 def dhApiQuery(url, apitoken, query, variables=None):
 
