@@ -250,3 +250,55 @@ def dhAPICreds(tier):
         url = 'https://this.is.a.test/url/graphql'
         token = os.getenv('LOCALTESTAPI')
     return {'url': url, 'token': token}
+
+
+
+def stsGetPVs(id = None, version = None, model = False):
+    """
+    Uses the STS server to get permissible values stored in MDB.  Easier than parsing the caDSR stuff.
+    
+    :param id:  The CDE ID or the name/handle of the model.  Examples 'CDS', 'CTDC', 'ICDC'
+    :type id: String
+    :param version: The version number of the CDE or model
+    :type modelversion: String
+    :param model: Set to True to query for all PVs in a model.  False (default) for all PVs in a CDE
+    :type model: Boolean
+    :rtype: Dictionary of {permissible value: concept code}
+    """
+    base_url = "https://sts.cancer.gov/v1/terms/"
+    headers = {'accept': 'application/json'}
+    url = None
+    
+    if model:
+        query = f"model-pvs/{id}/{version}/pvs"
+    else: 
+        if version is None:
+            version = "1.00"
+        query = f"cde-pvs/{id}/{version}/pvs"
+        
+    url = base_url+query
+    headers = {'accept': 'application/json'}
+    try:
+        result = requests.get(url = url, headers = headers)
+
+        if result.status_code == 200:
+            # Need to do the parsing here
+            cdejson = result.json()
+            if type(cdejson['CDECode']) is list:
+                if len(cdejson['permissibleValues'][0]) > 0:
+                    for pv in cdejson['permissibleValues'][0]:
+                        final[pv['ncit_concept_code']] = pv['value']
+                else:
+                    final = None
+            elif len(cdejson['permissibleValues']) > 0:
+                for pv in cdejson['permissibleValues']:
+                    final[pv['ncit_concept_code']] = pv['value']
+                else:
+                    final = None
+            else:
+                final = None
+            return final
+        else:
+            return (f"Error: {result.status_code}\n{result.content}")
+    except requests.exceptions.HTTPError as e:
+        return ("HTTP Error: {e}")
