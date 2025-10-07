@@ -253,9 +253,11 @@ def dhAPICreds(tier):
 
 
 
-def stsGetPVs(id = None, version = None, model = False):
+def getSTSCCPVs(id = None, version = None, model = False):
+
     """
-    Uses the STS server to get permissible values stored in MDB.  Easier than parsing the caDSR stuff.
+
+    Uses the STS server to get permissible values and concept codes stored in MDB.  Easier than parsing the caDSR stuff.
     
     :param id:  The CDE ID or the name/handle of the model.  Examples 'CDS', 'CTDC', 'ICDC'
     :type id: String
@@ -263,7 +265,8 @@ def stsGetPVs(id = None, version = None, model = False):
     :type modelversion: String
     :param model: Set to True to query for all PVs in a model.  False (default) for all PVs in a CDE
     :type model: Boolean
-    :rtype: Dictionary of {permissible value: concept code}
+    :rtype: Dictionary of {concept code:permissible value}
+
     """
     base_url = "https://sts.cancer.gov/v1/terms/"
     headers = {'accept': 'application/json'}
@@ -302,3 +305,46 @@ def stsGetPVs(id = None, version = None, model = False):
             return (f"Error: {result.status_code}\n{result.content}")
     except requests.exceptions.HTTPError as e:
         return ("HTTP Error: {e}")
+
+
+
+def getSTSPVList(cdeid, cdeversion):
+
+    '''
+
+    Uses STS to get a list of permissible values for a CDE ID and version
+
+    :param id:  The CDE public ID
+    :type id: String
+    :param version: The version number of the CDE
+    :type modelversion: String
+    :rtype: List of [permissible value]
+
+    '''
+
+    base_url = "https://sts.cancer.gov/v1/terms/"
+    headers = {'accept': 'application/json'}
+    url =  base_url+f"cde-pvs/{cdeid}/{cdeversion}/pvs"
+
+    try:
+        result = requests.get(url = url, headers = headers)
+        
+        if result.status_code == 200:
+            pvlist = []
+            cdejson = result.json()
+            # If there is a list of CDE codes in the returned data, the PVs are also in a list
+            if type(cdejson['CDECode']) is list:
+                for entry in cdejson['permissibleValues']:
+                    for pventry in entry:
+                        if len(pventry) > 0:
+                         pvlist.append(pventry['value'])
+            else:
+                # This is the normal approach.  If no PVs, an empty list is returned
+                if len(cdejson['permissibleValues']) > 0:
+                    for pv in cdejson['permissibleValues']:
+                        pvlist.append(pv['value'])
+
+        return pvlist
+    except requests.exceptions.HTTPError as e:
+        return ("HTTP Error: {e}")
+    

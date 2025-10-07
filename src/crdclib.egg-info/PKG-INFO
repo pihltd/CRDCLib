@@ -1,6 +1,6 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: crdclib
-Version: 0.0.6
+Version: 0.0.7
 Summary: A collection of functions useful for interactive with parts of CRDC
 Author-email: Todd Pihl <todd.pihl@gmail.com>
 Project-URL: Homepage, https://github.com/pihltd/CRDCLib
@@ -17,6 +17,7 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 Requires-Dist: requests
 Requires-Dist: pyyaml
+Dynamic: license-file
 
 # CRDCLib
 Personal library of CRDC routines I use a lot.  Theres nothing special, just saving writing time.
