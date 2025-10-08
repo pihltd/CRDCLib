@@ -1,6 +1,3 @@
-
-
-
 create_batch_query = """
 mutation CreateBatch(
     $submissionID: ID!,
@@ -15,6 +12,7 @@ mutation CreateBatch(
   }
 }
 """
+
 
 list_sub_query = """
 query ListSubmissions($status: String!){

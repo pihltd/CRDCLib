@@ -1,3 +1,8 @@
+import sys
+from pathlib import Path
+import os
+sys.path.insert(0, os.path.abspath('../..'))
+#sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -6,15 +11,20 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'crdclib'
-copyright = '2024, Todd Pihl'
+project = 'CRDCLib'
+copyright = '2025, Todd Pihl'
 author = 'Todd Pihl'
 release = '0.0.7'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinx_rtd_theme', 'sphinx.ext.autodoc']
+extensions = [
+    'sphinx.ext.duration',
+    'sphinx.ext.doctest',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary'
+]
 
 templates_path = ['_templates']
 exclude_patterns = []

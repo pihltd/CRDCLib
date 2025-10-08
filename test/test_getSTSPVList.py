@@ -13,5 +13,6 @@ class TestGetCDERecord(unittest.TestCase):
         empty_cdeversion = '1.00'
         emptylist = cl.getSTSPVList(empty_cdeid, empty_cdeversion)
         self.assertEqual(emptylist, [])
+        
 if __name__ == "__main__":
     unittest.main(verbosity=2)

@@ -1,14 +1,4 @@
-crdclib package
-===============
-
-crdclib.crdclib module
-----------------------
-
-.. currentmodule:: crdclib
-.. autofunction:: readYAML
-.. autofunction:: writeYAML
-.. autofunction:: getCDERecord
-.. autofunction:: cleanString
-.. autofunction:: dhApiQuery
-.. autofunction:: dhAPICreds
-
+CRDCLib Function documentation
+==============================
+.. automodule:: src.crdclib.crdclib
+    :members:

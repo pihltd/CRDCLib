@@ -7,16 +7,12 @@ import os
 
 
 def readYAML(yamlfile):
-
-    """
-
-    This method reads a YAML file and returns a JSON object
+    """This method reads a YAML file and returns a JSON object AND NOTHING ELSE
 
     :param yamlfile: A full path to the yaml file to be parsed
     :type yamlfile: String
     :return: A JSON object/dictionary representing the YAML file content
     :rtype: dictionary
-
     """
 
     with open(yamlfile) as f:
@@ -25,16 +21,12 @@ def readYAML(yamlfile):
 
 
 def writeYAML(filename, jsonobj):
-
-    """
-
-    Takes a filename and JSON object/dictionary and writes out a basic yaml file
+    """Takes a filename and JSON object/dictionary and writes out a basic yaml file
 
     :param filename: A full path to the output file
     :type filename: String
     :param jsonobj: A dictionary to be written as YAML
     :type jsonobj: Dictionary
-
     """
 
     with open(filename, 'w') as f:
@@ -43,10 +35,7 @@ def writeYAML(filename, jsonobj):
 
 
 def getCDERecord(cde_id, cde_version=None, verbose=False):
-
-    """
-
-    Queries the caDSR API with a CDE identifier and optional version, returns the full JSON object.  If no version is given, returns whatever the latest version is.
+    """Queries the caDSR API with a CDE identifier and optional version, returns the full JSON object.  If no version is given, returns whatever the latest version is.
 
     :param cde_id: CDE Public identifier
     :type cde_id: Integer
@@ -58,7 +47,6 @@ def getCDERecord(cde_id, cde_version=None, verbose=False):
     :rtype: string
     :return: If HTTP error, the requests.HTTPError object
     :rtype: request.HTTPError
-
     """
 
     if verbose:
@@ -79,34 +67,8 @@ def getCDERecord(cde_id, cde_version=None, verbose=False):
         return (f"Error Code: {results.status_code}\n{results.content}")
 
 
-def cleanString(inputstring, leavewhitespace=False):
-
-    r"""
-
-    Removes non-printing characters and whitespaces from strings
-
-    :param inputstring: The string to be processed
-    :type intputstring: String
-    :param leavewhitespace: Boolean, if True, uses regex [\n\r\t?]+.  If False, uses regex [\W]+
-    :type leavewhitespace: Boolean, optional, default False
-    :return: Processed string
-    :rtype: String
-
-    """
-
-    if leavewhitespace:
-        outputstring = re.sub(r"[\n\r\t?]+", '', inputstring)
-        outputstring.rstrip()
-    else:
-        outputstring = re.sub(r"[\W]+", '', inputstring)
-    return outputstring
-
-
-
 def runBentoAPIQuery(url, query, variables=None):
-    
-    """
-    Runs a GrpahQL Query against the Bento instance specified in the URL
+    """Runs a GrpahQL Query against the Bento instance specified in the URL
     
     :param url: URL of the Bento instance API
     :type url: URL
@@ -140,8 +102,7 @@ def runBentoAPIQuery(url, query, variables=None):
 
 
 def fullRunBentoAPIQuery(url, query, variables):
-    """
-    Runs a GrpahQL Query against the Bento instance specified in the URL and
+    """Runs a GrpahQL Query against the Bento instance specified in the URL and
     will keep querying until there are no more results.
     
      Note: The query and the variables MUST includ "first" and "offset"
@@ -159,6 +120,7 @@ def fullRunBentoAPIQuery(url, query, variables):
     :return: If HTTP error, the requests.HTTPError object
     :rtype: request.HTTPError
     """
+
     # Safety check
     if 'first' not in variables:
         return None
@@ -175,10 +137,7 @@ def fullRunBentoAPIQuery(url, query, variables):
 
 
 def dhApiQuery(url, apitoken, query, variables=None):
-
-    """
-
-    Runs queries against the Data Hub Submission Portal API
+    """Runs queries against the Data Hub Submission Portal API
 
     :param url: URL of the Submission Portal API
     :type url: URL
@@ -194,7 +153,6 @@ def dhApiQuery(url, apitoken, query, variables=None):
     :rtype: string
     :return: If HTTP error, the requests.HTTPError object
     :rtype: request.HTTPError
-
     """
 
     headers = {"Authorization": f"Bearer {apitoken}"}
@@ -212,10 +170,7 @@ def dhApiQuery(url, apitoken, query, variables=None):
 
 
 def dhAPICreds(tier):
-
-    """
-
-    A simple way to retrieve the Data Hub submission URLs and API tokens
+    """A simple way to retrieve the Data Hub submission URLs and API tokens
 
     :param tier: A string for the tier to return.  Must be one of prod, stage, qa, qa2, dev, dev2
     :type tier: String
@@ -223,7 +178,6 @@ def dhAPICreds(tier):
     :rtype: URL
     :return token: The API access token for the tier.
     :rtype: dictionary
-
     """
 
     url = None
@@ -254,10 +208,7 @@ def dhAPICreds(tier):
 
 
 def getSTSCCPVs(id = None, version = None, model = False):
-
-    """
-
-    Uses the STS server to get permissible values and concept codes stored in MDB.  Easier than parsing the caDSR stuff.
+    """Uses the STS server to get permissible values and concept codes stored in MDB.  Easier than parsing the caDSR stuff.
     
     :param id:  The CDE ID or the name/handle of the model.  Examples 'CDS', 'CTDC', 'ICDC'
     :type id: String
@@ -266,8 +217,8 @@ def getSTSCCPVs(id = None, version = None, model = False):
     :param model: Set to True to query for all PVs in a model.  False (default) for all PVs in a CDE
     :type model: Boolean
     :rtype: Dictionary of {concept code:permissible value}
-
     """
+
     base_url = "https://sts.cancer.gov/v1/terms/"
     headers = {'accept': 'application/json'}
     url = None
@@ -309,18 +260,14 @@ def getSTSCCPVs(id = None, version = None, model = False):
 
 
 def getSTSPVList(cdeid, cdeversion):
-
-    '''
-
-    Uses STS to get a list of permissible values for a CDE ID and version
+    """Uses STS to get a list of permissible values for a CDE ID and version
 
     :param id:  The CDE public ID
     :type id: String
     :param version: The version number of the CDE
     :type modelversion: String
     :rtype: List of [permissible value]
-
-    '''
+    """
 
     base_url = "https://sts.cancer.gov/v1/terms/"
     headers = {'accept': 'application/json'}
@@ -347,4 +294,26 @@ def getSTSPVList(cdeid, cdeversion):
         return pvlist
     except requests.exceptions.HTTPError as e:
         return ("HTTP Error: {e}")
+
+
+def cleanString(inputstring, leavewhitespace=False):
+    """Removes non-printing characters and whitespaces from strings
+    
+        :param string inputstring: The string to be processed
+        :type intputstring: String
+        :param leavewhitespace: Boolean, if True, uses regex [\\n\\r\\t?]+.  If False, uses regex [\W]+
+        :type leavewhitespace: Boolean, optional, default False
+        :return: Processed string
+        :rtype: String
+    """
+
+    if leavewhitespace:
+        outputstring = re.sub(r"[\n\r\t?]+", '', inputstring)
+        outputstring.rstrip()
+    else:
+        outputstring = re.sub(r"[\W]+", '', inputstring)
+    return outputstring
+
+
+
     
