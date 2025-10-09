@@ -103,3 +103,69 @@ query GetQCResults(
   }
 }
 """
+
+
+submission_stats_query = """
+    query SubmissionStats($id: ID!) {
+    submissionStats(_id: $id) {
+        stats {
+            nodeName
+            total
+            new
+            passed
+            warning
+            error
+        }
+    }
+}
+"""
+
+submission_nodes_query = """
+query getSubmissionNodes(
+    $_id: String!,
+    $nodeType: String!, 
+    $status: String,
+    $first: Int, 
+    $offset:Int, 
+    $orderBy: String, 
+    $sortDirection:String
+) {
+getSubmissionNodes(
+    submissionID: $_id
+    nodeType: $nodeType
+    status: $status
+    first: $first
+    offset: $offset
+    orderBy: $orderBy
+    sortDirection: $sortDirection
+) {
+    total
+    IDPropName
+    properties
+    nodes {
+        nodeID
+        nodeType
+        status
+        props
+    }
+    }
+}
+"""
+
+
+delete_datarecords_query = """
+  mutation DeleteDataRecords(
+      $_id: String!,
+      $nodeType: String!,
+      $nodeIDs: [String!]
+  ){
+      deleteDataRecords(
+        submissionID: $_id,
+        nodeType: $nodeType,
+        nodeIDs: $nodeIDs
+      ){
+        success
+        message
+      }
+  }
+"""

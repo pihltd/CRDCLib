@@ -208,7 +208,7 @@ def dhAPICreds(tier):
 
 
 def getSTSCCPVs(id = None, version = None, model = False):
-    """Uses the STS server to get permissible values and concept codes stored in MDB.  Easier than parsing the caDSR stuff.
+    """Uses the STS server to get permissible values and concept codes stored in MDB.  Easier than parsing the caDSR stuff. NOTE:  STS is only available on the NIH network
     
     :param id:  The CDE ID or the name/handle of the model.  Examples 'CDS', 'CTDC', 'ICDC'
     :type id: String
@@ -260,7 +260,7 @@ def getSTSCCPVs(id = None, version = None, model = False):
 
 
 def getSTSPVList(cdeid, cdeversion):
-    """Uses STS to get a list of permissible values for a CDE ID and version
+    """Uses STS to get a list of permissible values for a CDE ID and version.  NOTE:  STS is only available on the NIH network
 
     :param id:  The CDE public ID
     :type id: String
@@ -301,7 +301,7 @@ def cleanString(inputstring, leavewhitespace=False):
     
         :param string inputstring: The string to be processed
         :type intputstring: String
-        :param leavewhitespace: Boolean, if True, uses regex [\\n\\r\\t?]+.  If False, uses regex [\W]+
+        :param leavewhitespace: Boolean, if True, uses regex [\\n\\r\\t?]+.  If False, uses regex [\\W]+
         :type leavewhitespace: Boolean, optional, default False
         :return: Processed string
         :rtype: String

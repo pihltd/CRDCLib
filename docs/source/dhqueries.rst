@@ -19,7 +19,7 @@ CRDCLib DHQuery documentation
 
     A query that lists all of the submisisons the account can access
 
-    :param status: Allowed values are: All | New | In Progress | Submitted | Released |Completed | Archived | Canceled | Rejected | Withdrawn | Deleted
+    :param status: Allowed values are: All \| New \| In Progress \| Submitted \| Released \|Completed \| Archived \| Canceled \| Rejected \| Withdrawn \| Deleted
     :rtype: | _id
       | name
       | submitterID
@@ -61,7 +61,7 @@ CRDCLib DHQuery documentation
     Returns detailed validation results
 
     :param id: The submission ID to be queried
-    :param severities: The severity of the validation results. Can be All | Error | Warnings
+    :param severities: The severity of the validation results. Can be All \| Error \| Warnings
     :param first: The number of records to be returned.  If first is set to -1, the API will return all results.
     :param offset: The number of records to be skipped when returning results.
     :rtype: | total
@@ -75,3 +75,48 @@ CRDCLib DHQuery documentation
       |   warnings
       |     title
       |     description
+
+.. function:: submission_stats_query
+
+  Returns an overview of a high-level overview of the nodes that have been populated along with how many nodes have warnings and errors.  The goal of this query it so get some orientation before digging into the actual contents of any given node.
+
+    :param _id:  The submission ID to report
+    :rtype: | stats
+      | nodeName
+      | total
+      | new
+      | passed
+      | warning
+      | error
+
+.. function:: submission_nodes_query
+
+  Sometimes it can be useful to see what data have been submitted and this can be done with the **getSubmissionNodes** query.  This query will pull back all of the information added to each node in the submission.  This can allow submitters to double check that the data they're submitting is being processed properly and to spot any errors that may have gotten past validation.
+
+  :param submissionID: The submission ID to use
+  :param nodeType: The name of the node to query (file, sample, etc.)
+  :param status: Allowed values are: All \| New \| In Progress \| Submitted \| Released \|Completed \| Archived \| Canceled \| Rejected \| Withdrawn \| Deleted
+  :param first: The number of records to be returned.  If first is set to -1, the API will return all results.
+  :param offset: The number of records to be skipped when returning results.
+  :param orderBy: The field to order with the sortDirection
+  :param sortDirection: Ascending/descending sort
+  :rtype: |  total
+    | IDPropName
+    | properties
+    | nodes 
+    |     nodeID
+    |     nodeType
+    |     status
+    |     props
+
+
+.. function:: delete_datarecords_query
+
+  If there are individual records in your submission that need to be removed from the submission, the **deleteDataRecords** mutation will remove them from your submission.  This query will take one or more nodeIDs (obtained from the **getSubmissionNodes** query) and remove them from the submission records.
+  *Note*: To delete uploaded data files, set the **nodeType** field to 'data file'.  This will remove uploaded files from the S3 bucket.
+
+  :param submissionID: The submission ID where the deletion should happen
+  :param nodeType: The name of the node where the deletion will happen (file, sample, etc.)
+  :param nodeIDs: A list of the specific node IDs to be deleted (can bo obtained from the submission_nodes_query)
+  :rtype: | success
+    | message
