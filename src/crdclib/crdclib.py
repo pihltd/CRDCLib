@@ -232,6 +232,7 @@ def getSTSCCPVs(id = None, version = None, model = False):
         
     url = base_url+query
     headers = {'accept': 'application/json'}
+    final = {}
     try:
         result = requests.get(url = url, headers = headers)
 
