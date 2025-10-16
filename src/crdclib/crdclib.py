@@ -4,7 +4,7 @@ import requests
 import json
 import re
 import os
-
+from bento_meta.model import Node, Property, Term, Tag, Edge
 
 def readYAML(yamlfile):
     """This method reads a YAML file and returns a JSON object AND NOTHING ELSE
@@ -314,6 +314,149 @@ def cleanString(inputstring, leavewhitespace=False):
     else:
         outputstring = re.sub(r"[\W]+", '', inputstring)
     return outputstring
+
+
+
+def mdfAddNodes(mdfmodel, nodelist):
+    """Adds node objects to an MDF model object
+
+    :param mdfmodel: An MDF model object to which nodes will be added
+    :type mdfmodel: MDF model object
+    :param nodelist: A list of node names to be added to the MDF model
+    :type nodelist: List of String
+    :return: MDF Model with additional nodes added
+    :rtype: MDF Model object
+    """
+
+    for nodename in nodelist:
+        mdfmodel.add_node(Node({'handle': nodename}))
+    return mdfmodel
+
+
+def mdfAddProperty(mdfmodel, node_prop_dict, add_node = False):
+    """Adss property objects to an MDF model object.  If requested, missing nodes will be added
+
+    :param mdfmodel: An MDF model object to which nodes will be added
+    :type mdfmodel: MDF model object
+    :param node_prop_dict: A dictionary with an individual node name as key and a list of dictionaries containing property information {nodename:[{propery_description}]}
+    :type node_prop_dict: Dictionary
+    :param property_description: A dicionary {prop:property_name, isreq: Yes or No indictating if property is required, 'val': The property data type or 'value_set' if Enums are to be added, 'desc': Property description}
+    :type property_description: Dictionary
+    :param add_node: If set to true, any nodes found in node_prop_dict that are not already in the model will be added.
+    :type add_node:  Boolean, default is False
+    :return: MDF Model with additional properties added
+    :rtype: MDF Model object
+    """
+
+    for node, properties in node_prop_dict.items():
+        if add_node:
+            if node not in list(mdfmodel.nodes):
+                mdfmodel = mdfAddNodes(mdfmodel, [node])
+        for prop_info in properties:
+            propobj = Property({'handle': prop_info['prop'],
+                                "_parent_handle": node,
+                                'is_required': prop_info['isreq'],
+                                'value_domain': prop_info['val'],
+                                'desc': prop_info['desc']})
+            nodeobj = mdfmodel.nodes[node]
+            mdfmodel.add_prop(nodeobj, propobj)
+        return mdfmodel
+
+        
+def mdfAddEnums(mdfmodel, nodename, propname, enumlist):
+    """Adds an ENUM section to an existing property.
+
+    :param mdfmodel: An MDF model object to which nodes will be added
+    :type mdfmodel: MDF model object
+    :param nodename: The name of the node the property belongs to
+    :type nodename: String
+    :param propname: The name of the property to add Enums
+    :type propename: String
+    :param enumlist: The list of enumerated values to be added to the ENUM section
+    :type enumlist: List of string
+    :return: MDF Model with ENUMS added.  Returns original model if node or property doesn't exist.
+    :rtype: MDF Model object
+    """
+
+    # Check that the node and property exist
+    if nodename in list(mdfmodel.model.nodes):
+        if (nodename, propname) in list(mdfmodel.model.props):
+            propobj = mdfmodel.model.props[nodename, propname]
+            propobj.value_domain = 'value_set'
+            mdfmodel.add_terms(propobj, *enumlist)
+    return mdfmodel
+
+
+
+def mdfAddTerms(mdfmodel, nodename, propname, termdict):
+    """Adds a CDE Term section to an existing property.
+
+    :param mdfmodel: An MDF model object to which terms will be added
+    :type mdfmodel: MDF model object
+    :param propname: The name of the property to add Enums
+    :type propename: String
+    :param termdict: A dictionary containing the information for the CDE. {'handle': property name, 'value':cde name, 'origin_version': cde version, 'origin_name': Source of the CDE, 'origin_id':cde idenfier, 'origin_definition': CDE Definition}
+    :type termdict: Dictionary
+    :return: MDF Model with Term added.  Returns original model if the property doesn't exist.
+    :rtype: MDF Model object
+    """
+    
+    if (nodename, propname) in list(mdfmodel.model.props):
+        termobj = Term(termdict)
+        propobj = mdfmodel.model.props[(nodename, propname)]
+        mdfmodel.model.add_terms(propobj, termobj)
+    return mdfmodel
+
+def mdfAddEdges(mdfmodel, edgelist):
+    """Adds edges between existing nodes.  Returns the MDF model object
+    
+    :param mdfmodel: An MDF model object to which terms will be added
+    :type mdfmodel: MDF model object
+    :param edgelist: A list of dictionary [{'handle': A name forthe edge, 'multiplicity': one-to-one, many-to-one, ect, 'src': the name of the source node], 'dst': the name of the destination node}]
+    :type edgelist: List
+    :return: MDF Model with Edges added.  Returns original model if the nodes doesn't exist.
+    :rtype: MDF Model object
+    """
+
+    for edge in edgelist:
+        if edge['src'] in list(mdfmodel.model.nodes):
+            if edge['dst'] in list(mdfmodel.model.nodes):
+                srcnode = mdfmodel.model.nodes[edge['src']]
+                dstnode = mdfmodel.model.nodes[edge['dst']]
+                edgeobj = Edge({'handle':edge['handle'], 'multiplicity':edge['multiplicity'], 'src':srcnode, 'dst':dstnode})
+                mdfmodel.add_edge(edgeobj)
+    return mdfmodel
+
+
+def mdfAddTags(mdfmodel, objecttype, objectkey, tagdict):
+    """Adds a tag to a node, property, or edge.
+
+    :param mdfmodel: An MDF model object to which tags will be added
+    :type mdfmodel: MDF model object
+    :param objecttype: The entity to be tagged.  Must be one of 'node', 'property', 'edge'
+    :type objecttype: String
+    :param objectkey: The key used to find objects in MDF.  For nodes, it would be node name.  For properties it would by (nodename, propname).
+    :type objectkey: String or tuple
+    :param tagdict: A dictionary wtih the format {'key': key string, 'value': the value for the key}
+    :type tagdict: Dictionary
+    :return: MDF Model with tags added.  Returns original model if the nodes doesn't exist.
+    :rtype: MDF Model object
+    """
+
+    tagtarget = None
+    if objecttype == 'node':
+        if objectkey in list(mdfmodel.model.nodes):
+            tagtarget = mdfmodel.model.nodes[objectkey]
+    elif objecttype == 'property':
+        if objectkey in list(mdfmodel.model.props):
+            tagtarget = mdfmodel.model.props[objectkey]
+    elif objecttype == 'edge':
+        if objectkey in list(mdfmodel.model.edges):
+            tagtarget = mdfmodel.model.edges[objectkey]
+    tagobj = Tag(tagdict)
+    tagtarget.tags[tagobj.key] = tagobj
+    return mdfmodel
+
 
 
 
