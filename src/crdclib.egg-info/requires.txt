@@ -1,6 +1,3 @@
 requests
 pyyaml
-re
-os
-json
 bento_meta

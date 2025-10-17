@@ -10,8 +10,8 @@ class TestAddMDFNode(unittest.TestCase):
         bumlist = ['Yabba', 'Dabba', 'Doo']
 
         mdf = cl.mdfAddNodes(mdf, nodelist)
-        self.assertEqual(nodelist, list(mdf.model.nodes))
-        self.assertNotEqual(bumlist, list(mdf.model.nodes))
+        self.assertEqual(nodelist, list(mdf.nodes))
+        self.assertNotEqual(bumlist, list(mdf.nodes))
         
 if __name__ == "__main__":
     unittest.main(verbosity=2)

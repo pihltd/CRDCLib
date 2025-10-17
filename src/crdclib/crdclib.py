@@ -379,9 +379,9 @@ def mdfAddEnums(mdfmodel, nodename, propname, enumlist):
     """
 
     # Check that the node and property exist
-    if nodename in list(mdfmodel.model.nodes):
-        if (nodename, propname) in list(mdfmodel.model.props):
-            propobj = mdfmodel.model.props[nodename, propname]
+    if nodename in list(mdfmodel.nodes):
+        if (nodename, propname) in list(mdfmodel.props):
+            propobj = mdfmodel.props[nodename, propname]
             propobj.value_domain = 'value_set'
             mdfmodel.add_terms(propobj, *enumlist)
     return mdfmodel
@@ -401,10 +401,10 @@ def mdfAddTerms(mdfmodel, nodename, propname, termdict):
     :rtype: MDF Model object
     """
     
-    if (nodename, propname) in list(mdfmodel.model.props):
+    if (nodename, propname) in list(mdfmodel.props):
         termobj = Term(termdict)
-        propobj = mdfmodel.model.props[(nodename, propname)]
-        mdfmodel.model.add_terms(propobj, termobj)
+        propobj = mdfmodel.props[(nodename, propname)]
+        mdfmodel.add_terms(propobj, termobj)
     return mdfmodel
 
 def mdfAddEdges(mdfmodel, edgelist):
@@ -419,10 +419,10 @@ def mdfAddEdges(mdfmodel, edgelist):
     """
 
     for edge in edgelist:
-        if edge['src'] in list(mdfmodel.model.nodes):
-            if edge['dst'] in list(mdfmodel.model.nodes):
-                srcnode = mdfmodel.model.nodes[edge['src']]
-                dstnode = mdfmodel.model.nodes[edge['dst']]
+        if edge['src'] in list(mdfmodel.nodes):
+            if edge['dst'] in list(mdfmodel.nodes):
+                srcnode = mdfmodel.nodes[edge['src']]
+                dstnode = mdfmodel.nodes[edge['dst']]
                 edgeobj = Edge({'handle':edge['handle'], 'multiplicity':edge['multiplicity'], 'src':srcnode, 'dst':dstnode})
                 mdfmodel.add_edge(edgeobj)
     return mdfmodel
@@ -445,14 +445,14 @@ def mdfAddTags(mdfmodel, objecttype, objectkey, tagdict):
 
     tagtarget = None
     if objecttype == 'node':
-        if objectkey in list(mdfmodel.model.nodes):
-            tagtarget = mdfmodel.model.nodes[objectkey]
+        if objectkey in list(mdfmodel.nodes):
+            tagtarget = mdfmodel.nodes[objectkey]
     elif objecttype == 'property':
-        if objectkey in list(mdfmodel.model.props):
-            tagtarget = mdfmodel.model.props[objectkey]
+        if objectkey in list(mdfmodel.props):
+            tagtarget = mdfmodel.props[objectkey]
     elif objecttype == 'edge':
-        if objectkey in list(mdfmodel.model.edges):
-            tagtarget = mdfmodel.model.edges[objectkey]
+        if objectkey in list(mdfmodel.edges):
+            tagtarget = mdfmodel.edges[objectkey]
     tagobj = Tag(tagdict)
     tagtarget.tags[tagobj.key] = tagobj
     return mdfmodel

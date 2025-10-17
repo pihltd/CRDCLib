@@ -14,7 +14,7 @@ class TestAddMDFEdges(unittest.TestCase):
         
         mdf = cl.mdfAddEdges(mdf, edglist)
         
-        self.assertEqual([('of_yabba', 'nodeA', 'Yabba'), ('of_dabba', 'nodeB', 'Dabba')], list(mdf.model.edges))
+        self.assertEqual([('of_yabba', 'nodeA', 'Yabba'), ('of_dabba', 'nodeB', 'Dabba')], list(mdf.edges))
         
 if __name__ == "__main__":
     unittest.main(verbosity=2)
