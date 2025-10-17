@@ -360,7 +360,7 @@ def mdfAddProperty(mdfmodel, node_prop_dict, add_node = False):
                                 'desc': prop_info['desc']})
             nodeobj = mdfmodel.nodes[node]
             mdfmodel.add_prop(nodeobj, propobj)
-        return mdfmodel
+    return mdfmodel
 
         
 def mdfAddEnums(mdfmodel, nodename, propname, enumlist):
@@ -404,7 +404,7 @@ def mdfAddTerms(mdfmodel, nodename, propname, termdict):
     if (nodename, propname) in list(mdfmodel.props):
         termobj = Term(termdict)
         propobj = mdfmodel.props[(nodename, propname)]
-        mdfmodel.add_terms(propobj, termobj)
+        mdfmodel.annotate(propobj, termobj)
     return mdfmodel
 
 def mdfAddEdges(mdfmodel, edgelist):
@@ -412,7 +412,7 @@ def mdfAddEdges(mdfmodel, edgelist):
     
     :param mdfmodel: An MDF model object to which terms will be added
     :type mdfmodel: MDF model object
-    :param edgelist: A list of dictionary [{'handle': A name forthe edge, 'multiplicity': one-to-one, many-to-one, ect, 'src': the name of the source node], 'dst': the name of the destination node}]
+    :param edgelist: A list of dictionary [{'handle': A name forthe edge, 'multiplicity': one-to-one, many-to-one, ect, 'src': the name of the source node, 'dst': the name of the destination node, 'desc': a description of the edge}]
     :type edgelist: List
     :return: MDF Model with Edges added.  Returns original model if the nodes doesn't exist.
     :rtype: MDF Model object
@@ -423,7 +423,7 @@ def mdfAddEdges(mdfmodel, edgelist):
             if edge['dst'] in list(mdfmodel.nodes):
                 srcnode = mdfmodel.nodes[edge['src']]
                 dstnode = mdfmodel.nodes[edge['dst']]
-                edgeobj = Edge({'handle':edge['handle'], 'multiplicity':edge['multiplicity'], 'src':srcnode, 'dst':dstnode})
+                edgeobj = Edge({'handle':edge['handle'], 'multiplicity':edge['multiplicity'], 'src':srcnode, 'dst':dstnode, 'desc': edge['desc']})
                 mdfmodel.add_edge(edgeobj)
     return mdfmodel
 
