@@ -24,7 +24,7 @@ class TestAddMDFTags(unittest.TestCase):
 
         self.assertEqual({'key': 'Barney', 'value': 'Rubble'}, mdf.nodes['nodeA'].tags['Barney'].get_attr_dict())
         self.assertEqual({'key': 'Barney', 'value': 'Rubble'}, mdf.props[('nodeA', 'PropertyA')].tags['Barney'].get_attr_dict())
-        self.assertEqual({'key': 'Barney', 'value': 'Rubble'}, mdf.edges['nodeA'].tags['Barney'].get_attr_dict())
+        self.assertEqual({'key': 'Barney', 'value': 'Rubble'}, mdf.edges[('of_nodeA', 'nodeB', 'nodeA')].tags['Barney'].get_attr_dict())
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

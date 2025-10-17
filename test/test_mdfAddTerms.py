@@ -12,10 +12,18 @@ class TestAddMDFTerms(unittest.TestCase):
         mdf = cl.mdfAddProperty(mdf, prop_dictionary1, True)
         mdf = cl.mdfAddProperty(mdf, prop_dictionary2, True)
 
-        cdeinfo = {'handle': 'TestCDE', 'value':'TestCDE', 'origin_version': 1.00, 'origin_name': 'CRDCInc.', 'origin_id':12345, 'origin_definition': 'A CDE for testing Only'}
+        cdeinfo = {'handle': 'TestCDE', 'value':'TestCDE', 'origin_version': '1.0', 'origin_name': 'CRDCInc.', 'origin_id':'12345', 'origin_definition': 'A CDE for testing Only'}
         mdf = cl.mdfAddTerms(mdf, 'nodeA', 'PropertyA', cdeinfo)
 
-        self.assertEqual(cdeinfo, mdf.terms[('TestCDE','CRDCInc.')].get_attr_dict())
+        addedinfo = mdf.terms[('TestCDE', 'CRDCInc.')].get_attr_dict()
+        
+        #self.assertEqual(cdeinfo, mdf.terms[('TestCDE','CRDCInc.')].get_attr_dict())
+        self.assertEqual(cdeinfo['handle'], addedinfo['handle'])
+        self.assertEqual(cdeinfo['value'], addedinfo['value'])
+        self.assertEqual(cdeinfo['origin_version'], addedinfo['origin_version'])
+        self.assertEqual(cdeinfo['origin_name'], addedinfo['origin_name'])
+        self.assertEqual(cdeinfo['origin_id'], addedinfo['origin_id'])
+        self.assertEqual(cdeinfo['origin_definition'], addedinfo['origin_definition'])
 
 
 

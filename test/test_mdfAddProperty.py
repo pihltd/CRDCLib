@@ -12,7 +12,7 @@ class TestAddMDFProps(unittest.TestCase):
 
         mdf = cl.mdfAddNodes(mdf, nodelist)
         mdf = cl.mdfAddProperty(mdf, prop_dictionary1, False)
-        self.assertEqual(('nodeA', 'PropertyA'), list(mdf.props))
+        self.assertEqual([('nodeA', 'PropertyA')], list(mdf.props))
         mdf = cl.mdfAddProperty(mdf, prop_dictionary2, True)
         self.assertTrue(('nodeB', 'PropertyB') in list(mdf.props))
 
