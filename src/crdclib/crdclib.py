@@ -6,6 +6,9 @@ import re
 import os
 from bento_meta.model import Node, Property, Term, Tag, Edge
 
+
+
+
 def readYAML(yamlfile):
     """This method reads a YAML file and returns a JSON object AND NOTHING ELSE
 
@@ -18,6 +21,8 @@ def readYAML(yamlfile):
     with open(yamlfile) as f:
         yamljson = yaml.load(f, Loader=yaml.FullLoader)
     return yamljson
+
+
 
 
 def writeYAML(filename, jsonobj):
@@ -34,7 +39,9 @@ def writeYAML(filename, jsonobj):
     f.close()
 
 
-def getCDERecord(cde_id, cde_version=None, verbose=False):
+
+
+def getCDERecord(cde_id, cde_version=None):
     """Queries the caDSR API with a CDE identifier and optional version, returns the full JSON object.  If no version is given, returns whatever the latest version is.
 
     :param cde_id: CDE Public identifier
@@ -49,8 +56,6 @@ def getCDERecord(cde_id, cde_version=None, verbose=False):
     :rtype: request.HTTPError
     """
 
-    if verbose:
-        print(f"CDE ID:\t{cde_id}\tVersion:\t{cde_version}")
     if cde_version is None:
         url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cde_id)
     else:
@@ -65,6 +70,48 @@ def getCDERecord(cde_id, cde_version=None, verbose=False):
         return results
     else:
         return (f"Error Code: {results.status_code}\n{results.content}")
+
+
+def getCDEInfo(cdeid, version=None):
+    """Instead of the full record, this just returns the CDE Name, CDE Definition, and CDE version.  If no version is supplied, the latest version is returned.  Used mostly in conjunction with MDF models.
+
+    :param cde_id: CDE Public identifier
+    :type cde_id: Integer
+    :param cde_version: The version of the CDE to be queried.  If not supplied the latest version will be returned
+    :type cde_version: String, optional
+    :rtype: Dictionary ('cdename':name of the CDE, 'cdedef': CDE defintion, 'cdever': CDE version)
+    """
+
+    definition = None
+    cdename = None
+    cdeversion = None
+    if version is None:
+        url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cdeid)
+    else:
+        url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cdeid)+"?version="+str(version)
+    headers = {'accept':'application/json'}
+
+    try:
+        results = requests.get(url, headers = headers)
+    except requests.exceptions.HTTPError as e:
+        print(e)
+    if results.status_code == 200:
+        results = json.loads(results.content.decode())
+        if results['DataElement'] is not None:
+            if 'preferredName' in results['DataElement']:
+                cdename = results['DataElement']['preferredName']
+            else:
+                cdename = results['DataElement']['longName']
+            if 'preferredDefinition' in results['DataElement']:
+                definition = results['DataElement']['preferredDefinition']
+            else:
+                definition = results['DataElement']['definition']
+            cdeversion = results['DataElement']['version']
+    else:
+        cdename = 'caDSR Name Error'
+    return {'cdename':cdename, 'cdedef':definition, 'cdever':cdeversion}
+
+
 
 
 def runBentoAPIQuery(url, query, variables=None):
@@ -101,9 +148,14 @@ def runBentoAPIQuery(url, query, variables=None):
 
 
 
+
+
 def fullRunBentoAPIQuery(url, query, variables):
     """Runs a GrpahQL Query against the Bento instance specified in the URL and
     will keep querying until there are no more results.
+
+
+    NOTE:  Trashing this, it's a bad idea.  It's better implemented in the calling software using runBentoAPIQuery
     
      Note: The query and the variables MUST includ "first" and "offset"
     
@@ -134,6 +186,9 @@ def fullRunBentoAPIQuery(url, query, variables):
     # Need to increment offset varialbe
     # How to determine column headers
     # And/or how to load dataframe
+
+
+
 
 
 def dhApiQuery(url, apitoken, query, variables=None):
@@ -167,6 +222,8 @@ def dhApiQuery(url, apitoken, query, variables=None):
             return (f"Status Code: {result.status_code}\n{result.content}")
     except requests.exceptions.HTTPError as e:
         return (f"HTTPError: {e}")
+
+
 
 
 def dhAPICreds(tier):
@@ -204,6 +261,7 @@ def dhAPICreds(tier):
         url = 'https://this.is.a.test/url/graphql'
         token = os.getenv('LOCALTESTAPI')
     return {'url': url, 'token': token}
+
 
 
 
@@ -260,6 +318,8 @@ def getSTSCCPVs(id = None, version = None, model = False):
 
 
 
+
+
 def getSTSPVList(cdeid, cdeversion):
     """Uses STS to get a list of permissible values for a CDE ID and version.  NOTE:  STS is only available on the NIH network
 
@@ -297,6 +357,8 @@ def getSTSPVList(cdeid, cdeversion):
         return ("HTTP Error: {e}")
 
 
+
+
 def cleanString(inputstring, leavewhitespace=False):
     """Removes non-printing characters and whitespaces from strings
     
@@ -317,6 +379,8 @@ def cleanString(inputstring, leavewhitespace=False):
 
 
 
+
+
 def mdfAddNodes(mdfmodel, nodelist):
     """Adds node objects to an MDF model object
 
@@ -331,6 +395,8 @@ def mdfAddNodes(mdfmodel, nodelist):
     for nodename in nodelist:
         mdfmodel.add_node(Node({'handle': nodename}))
     return mdfmodel
+
+
 
 
 def mdfAddProperty(mdfmodel, node_prop_dict, add_node = False):
@@ -360,7 +426,9 @@ def mdfAddProperty(mdfmodel, node_prop_dict, add_node = False):
                                 'desc': prop_info['desc']})
             nodeobj = mdfmodel.nodes[node]
             mdfmodel.add_prop(nodeobj, propobj)
-        return mdfmodel
+    return mdfmodel
+
+
 
         
 def mdfAddEnums(mdfmodel, nodename, propname, enumlist):
@@ -382,14 +450,16 @@ def mdfAddEnums(mdfmodel, nodename, propname, enumlist):
     if nodename in list(mdfmodel.nodes):
         if (nodename, propname) in list(mdfmodel.props):
             propobj = mdfmodel.props[nodename, propname]
-            propobj.value_domain = 'value_set'
+            if propobj.value_domain != 'value_set':
+                propobj.value_domain = 'value_set'
             mdfmodel.add_terms(propobj, *enumlist)
     return mdfmodel
 
 
 
-def mdfAddTerms(mdfmodel, nodename, propname, termdict):
-    """Adds a CDE Term section to an existing property.
+
+def mdfAnnotateTerms(mdfmodel, nodename, propname, termdict):
+    """Adds a CDE Term section to an existing property. Note that this is slightly different from mdfAddTerms which creates a separat Term secion and doesn't annotate the property.  In essence, this only matters when the MDF is saved to a YAML file.  With Annotation the Terms are visible with the Properties, with mdfAddTerms, they're not
 
     :param mdfmodel: An MDF model object to which terms will be added
     :type mdfmodel: MDF model object
@@ -404,15 +474,42 @@ def mdfAddTerms(mdfmodel, nodename, propname, termdict):
     if (nodename, propname) in list(mdfmodel.props):
         termobj = Term(termdict)
         propobj = mdfmodel.props[(nodename, propname)]
+        mdfmodel.annotate(propobj, termobj)
+    return mdfmodel
+
+
+
+
+def mdfAddTerms(mdfmodel, nodename, propname, termdict):
+    """Adds a CDE Term section to an existing property. Note that this is slightly different from mdfAnnotateTerms which annotates the property.  In essence, this only matters when the MDF is saved to a YAML file.  With Annotation the Terms are visible with the Properties, with mdfAddTerms, they're not
+
+    :param mdfmodel: An MDF model object to which terms will be added
+    :type mdfmodel: MDF model object
+    :param propname: The name of the property to add Enums
+    :type propename: String
+    :param termdict: A dictionary containing the information for the CDE. {'handle': property name, 'value':cde name, 'origin_version': cde version, 'origin_name': Source of the CDE, 'origin_id':cde idenfier, 'origin_definition': CDE Definition}
+    :type termdict: Dictionary
+    :return: MDF Model with Term added.  Returns original model if the property doesn't exist.
+    :rtype: MDF Model object
+    """
+    
+    if (nodename, propname) in list(mdfmodel.props):
+        termobj = Term(termdict)
+        propobj = mdfmodel.props[(nodename, propname)]
+        if propobj.value_domain != 'value_set':
+            propobj.value_domain = 'value_set'
         mdfmodel.add_terms(propobj, termobj)
     return mdfmodel
+
+
+
 
 def mdfAddEdges(mdfmodel, edgelist):
     """Adds edges between existing nodes.  Returns the MDF model object
     
     :param mdfmodel: An MDF model object to which terms will be added
     :type mdfmodel: MDF model object
-    :param edgelist: A list of dictionary [{'handle': A name forthe edge, 'multiplicity': one-to-one, many-to-one, ect, 'src': the name of the source node], 'dst': the name of the destination node}]
+    :param edgelist: A list of dictionary [{'handle': A name forthe edge, 'multiplicity': one-to-one, many-to-one, ect, 'src': the name of the source node, 'dst': the name of the destination node, 'desc': a description of the edge}]
     :type edgelist: List
     :return: MDF Model with Edges added.  Returns original model if the nodes doesn't exist.
     :rtype: MDF Model object
@@ -423,9 +520,11 @@ def mdfAddEdges(mdfmodel, edgelist):
             if edge['dst'] in list(mdfmodel.nodes):
                 srcnode = mdfmodel.nodes[edge['src']]
                 dstnode = mdfmodel.nodes[edge['dst']]
-                edgeobj = Edge({'handle':edge['handle'], 'multiplicity':edge['multiplicity'], 'src':srcnode, 'dst':dstnode})
+                edgeobj = Edge({'handle':edge['handle'], 'multiplicity':edge['multiplicity'], 'src':srcnode, 'dst':dstnode, 'desc': edge['desc']})
                 mdfmodel.add_edge(edgeobj)
     return mdfmodel
+
+
 
 
 def mdfAddTags(mdfmodel, objecttype, objectkey, tagdict):
