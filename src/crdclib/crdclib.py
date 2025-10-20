@@ -450,7 +450,8 @@ def mdfAddEnums(mdfmodel, nodename, propname, enumlist):
     if nodename in list(mdfmodel.nodes):
         if (nodename, propname) in list(mdfmodel.props):
             propobj = mdfmodel.props[nodename, propname]
-            propobj.value_domain = 'value_set'
+            if propobj.value_domain != 'value_set':
+                propobj.value_domain = 'value_set'
             mdfmodel.add_terms(propobj, *enumlist)
     return mdfmodel
 
@@ -495,6 +496,8 @@ def mdfAddTerms(mdfmodel, nodename, propname, termdict):
     if (nodename, propname) in list(mdfmodel.props):
         termobj = Term(termdict)
         propobj = mdfmodel.props[(nodename, propname)]
+        if propobj.value_domain != 'value_set':
+            propobj.value_domain = 'value_set'
         mdfmodel.add_terms(propobj, termobj)
     return mdfmodel
 
