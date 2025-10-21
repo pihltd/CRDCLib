@@ -304,10 +304,9 @@ def getSTSCCPVs(id = None, version = None, model = False):
                 else:
                     final = None
             elif len(cdejson['permissibleValues']) > 0:
+                print('CDE is not a list but is > 0')
                 for pv in cdejson['permissibleValues']:
                     final[pv['ncit_concept_code']] = pv['value']
-                else:
-                    final = None
             else:
                 final = None
             return final

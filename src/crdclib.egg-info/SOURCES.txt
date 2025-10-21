@@ -1,6 +1,7 @@
 LICENSE
 README.md
 pyproject.toml
+src/__init__.py
 src/crdclib/__init__.py
 src/crdclib/crdclib.py
 src/crdclib/dhqueries.py
@@ -21,4 +22,5 @@ test/test_mdfAddNodes.py
 test/test_mdfAddProperty.py
 test/test_mdfAddTags.py
 test/test_mdfAddTerms.py
+test/test_mdfAnnotateTerms.py
 test/test_readyaml.py

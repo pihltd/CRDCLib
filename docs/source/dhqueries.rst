@@ -120,3 +120,17 @@ CRDCLib DHQuery documentation
   :param nodeIDs: A list of the specific node IDs to be deleted (can bo obtained from the submission_nodes_query)
   :rtype: | success
     | message
+  
+.. function:: study_query
+
+  This returns information on the user's status and the studies they have access to.
+
+  :param None:  This query takes no parameters
+  :rtype | userStatus
+    | studies 
+    |   _id
+    |  controlledAccess
+    |  createdAt
+    |  dbGaPID
+    |  studyName
+    |  studyAbbreviation

@@ -1,6 +1,8 @@
 import unittest
 import os
-from crdclib import crdclib as cl
+import sys
+sys.path.append('../')
+from src.crdclib import crdclib as cl
 
 
 class TestGetCreds(unittest.TestCase):

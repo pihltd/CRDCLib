@@ -1,6 +1,8 @@
 import unittest
-from crdclib import crdclib as cl
 from bento_meta.model import Model
+import sys
+sys.path.append('../')
+from src.crdclib import crdclib as cl
 
 class TestAddMDFEdges(unittest.TestCase):
 
@@ -9,8 +11,8 @@ class TestAddMDFEdges(unittest.TestCase):
         nodelist = ['nodeA', 'nodeB', 'nodeC','Yabba', 'Dabba', 'Doo']
         mdf = cl.mdfAddNodes(mdf, nodelist)
 
-        edglist = [{'handle': 'of_yabba', 'multiplicity': 'one-to-one', 'src': 'nodeA', 'dst': 'Yabba'},
-                   {'handle': 'of_dabba', 'multiplicity': 'many-to-one', 'src': 'nodeB', 'dst': 'Dabba'}]
+        edglist = [{'handle': 'of_yabba', 'multiplicity': 'one-to-one', 'src': 'nodeA', 'dst': 'Yabba', 'desc': 'Barney Rubble'},
+                   {'handle': 'of_dabba', 'multiplicity': 'many-to-one', 'src': 'nodeB', 'dst': 'Dabba', 'desc': 'Fred Flintstone'}]
         
         mdf = cl.mdfAddEdges(mdf, edglist)
         

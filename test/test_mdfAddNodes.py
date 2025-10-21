@@ -1,6 +1,8 @@
 import unittest
-from crdclib import crdclib as cl
 from bento_meta.model import Model
+import sys
+sys.path.append('../')
+from src.crdclib import crdclib as cl
 
 class TestAddMDFNode(unittest.TestCase):
 
