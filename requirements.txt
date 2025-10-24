@@ -2,3 +2,4 @@ pyyaml
 requests
 bento_meta
 json
+pandas

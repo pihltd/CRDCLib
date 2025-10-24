@@ -169,3 +169,20 @@ delete_datarecords_query = """
       }
   }
 """
+
+
+study_query = """
+{
+  getMyUser {
+    userStatus
+    studies {
+      _id
+      controlledAccess
+      createdAt
+      dbGaPID
+      studyName
+      studyAbbreviation
+    }
+  }
+}
+"""

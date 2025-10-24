@@ -1,6 +1,8 @@
 import unittest
-from crdclib import crdclib as cl
 from bento_meta.model import Model
+import sys
+sys.path.append('../')
+from src.crdclib import crdclib as cl
 
 class TestAddMDFTags(unittest.TestCase):
 
@@ -12,7 +14,7 @@ class TestAddMDFTags(unittest.TestCase):
         mdf = cl.mdfAddProperty(mdf, prop_dictionary1, True)
         mdf = cl.mdfAddProperty(mdf, prop_dictionary2, True)
 
-        edglist = [{'handle': 'of_nodeA', 'multiplicity': 'one-to-one', 'src': 'nodeB', 'dst': 'nodeA'}]
+        edglist = [{'handle': 'of_nodeA', 'multiplicity': 'one-to-one', 'src': 'nodeB', 'dst': 'nodeA', 'desc': 'Random'}]
 
         mdf = cl.mdfAddEdges(mdf, edglist)
 

@@ -1,5 +1,7 @@
 import unittest
-from crdclib import crdclib as cl
+import sys
+sys.path.append('../')
+from src.crdclib import crdclib as cl
 
 
 class TestCleanString(unittest.TestCase):
