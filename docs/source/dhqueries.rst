@@ -126,7 +126,7 @@ CRDCLib DHQuery documentation
   This returns information on the user's status and the studies they have access to.
 
   :param None:  This query takes no parameters
-  :rtype | userStatus
+  :rtype: | userStatus
     | studies 
     |   _id
     |  controlledAccess

@@ -5,6 +5,7 @@ import json
 import re
 import os
 from bento_meta.model import Node, Property, Term, Tag, Edge
+import pandas as pd
 
 
 
@@ -556,6 +557,41 @@ def mdfAddTags(mdfmodel, objecttype, objectkey, tagdict):
     return mdfmodel
 
 
+def mdfBuildLoadSheets(mdf):
+    """Uses an MDF model to build a complete set of load sheets suitable for use in the Submission Portal.  Returns a dictionary of dataframes with the node as the key.  Note that the 'type' column is NOT added by this routine.
+    
+    :param mdf: MDF Model Object
+    :rtype: Dictionary.  Keys are nodes, values are dataframes that can be printed to CSV and used as load sheets
+    """
 
+    loadsheets = {}
+    nodes = mdf.model.nodes
+    for node in nodes:
+        nodeprops = mdf.model.nodes[node].props
+        nodelist = []
+        for prop in nodeprops:
+            if 'Template' in mdf.model.props[(node, prop)].tags:
+                # Remove any property that is set to 'Template: No'
+                if mdf.model.props[(node,prop)].tags['Template'].get_attr_dict()['value'] != 'No':
+                    nodelist.append(prop)
+            else:
+                nodelist.append(prop)
+        # Now need to add the relationship columns.  There are usually expressed as node.property
+        srcedges = mdf.model.edges_by_src(mdf.model.nodes[node])
+        for srcedge in srcedges:
+            # Need to find the destination node:
+            dstnode = srcedge.dst.handle
+            #Now get the properties for that node
+            dstprops = mdf.model.nodes[dstnode].props
+            reqlist = []
+            for dstprop in dstprops:
+                # Relationship columns are based on key columns in the dst noe
+                if mdf.model.props[(dstnode, dstprop)].get_attr_dict()['is_key'] == 'True':
+                    reqlist.append(dstnode+'.'+dstprop)
+            nodelist.extend(reqlist)
+
+        load_df = pd.DataFrame(columns=nodelist)
+        loadsheets[node] = load_df
+    return loadsheets
 
     
