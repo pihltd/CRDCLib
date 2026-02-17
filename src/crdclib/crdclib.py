@@ -406,7 +406,7 @@ def mdfAddProperty(mdfmodel, node_prop_dict, add_node = False):
     :type mdfmodel: MDF model object
     :param node_prop_dict: A dictionary with an individual node name as key and a list of dictionaries containing property information {nodename:[{propery_description}]}
     :type node_prop_dict: Dictionary
-    :param property_description: A dicionary {prop:property_name, isreq: Yes or No indictating if property is required, 'val': The property data type or 'value_set' if Enums are to be added, 'desc': Property description}
+    :param property_description: A dicionary {prop:property_name, isreq: Yes or No indictating if property is required, iskey: Yes or No indicating if property is key for the node,  'val': The property data type or 'value_set' if Enums are to be added, 'desc': Property description}
     :type property_description: Dictionary
     :param add_node: If set to true, any nodes found in node_prop_dict that are not already in the model will be added.
     :type add_node:  Boolean, default is False
@@ -419,11 +419,14 @@ def mdfAddProperty(mdfmodel, node_prop_dict, add_node = False):
             if node not in list(mdfmodel.nodes):
                 mdfmodel = mdfAddNodes(mdfmodel, [node])
         for prop_info in properties:
-            propobj = Property({'handle': prop_info['prop'],
+            propdict = {'handle': prop_info['prop'],
                                 "_parent_handle": node,
                                 'is_required': prop_info['isreq'],
                                 'value_domain': prop_info['val'],
-                                'desc': prop_info['desc']})
+                                'desc': prop_info['desc']}
+            if 'iskey' in prop_info:
+                propdict['is_key'] = prop_info['iskey']
+            propobj = Property(propdict)
             nodeobj = mdfmodel.nodes[node]
             mdfmodel.add_prop(nodeobj, propobj)
     return mdfmodel
