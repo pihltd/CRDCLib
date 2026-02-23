@@ -406,7 +406,7 @@ def mdfAddProperty(mdfmodel, node_prop_dict, add_node = False):
     :type mdfmodel: MDF model object
     :param node_prop_dict: A dictionary with an individual node name as key and a list of dictionaries containing property information {nodename:[{propery_description}]}
     :type node_prop_dict: Dictionary
-    :param property_description: A dicionary {prop:property_name, isreq: Yes or No indictating if property is required, 'val': The property data type or 'value_set' if Enums are to be added, 'desc': Property description}
+    :param property_description: A dicionary {prop:property_name, isreq: Yes or No indictating if property is required, iskey: Yes or No indicating if property is key for the node,  'val': The property data type or 'value_set' if Enums are to be added, 'desc': Property description}
     :type property_description: Dictionary
     :param add_node: If set to true, any nodes found in node_prop_dict that are not already in the model will be added.
     :type add_node:  Boolean, default is False
@@ -419,11 +419,14 @@ def mdfAddProperty(mdfmodel, node_prop_dict, add_node = False):
             if node not in list(mdfmodel.nodes):
                 mdfmodel = mdfAddNodes(mdfmodel, [node])
         for prop_info in properties:
-            propobj = Property({'handle': prop_info['prop'],
+            propdict = {'handle': prop_info['prop'],
                                 "_parent_handle": node,
                                 'is_required': prop_info['isreq'],
                                 'value_domain': prop_info['val'],
-                                'desc': prop_info['desc']})
+                                'desc': prop_info['desc']}
+            if 'iskey' in prop_info:
+                propdict['is_key'] = prop_info['iskey']
+            propobj = Property(propdict)
             nodeobj = mdfmodel.nodes[node]
             mdfmodel.add_prop(nodeobj, propobj)
     return mdfmodel
@@ -557,11 +560,18 @@ def mdfAddTags(mdfmodel, objecttype, objectkey, tagdict):
     return mdfmodel
 
 
-def mdfBuildLoadSheets(mdf):
-    """Uses an MDF model to build a complete set of load sheets suitable for use in the Submission Portal.  Returns a dictionary of dataframes with the node as the key.  Note that the 'type' column is NOT added by this routine.
-    
+def mdfBuildLoadSheets(mdf, reverse=False, typecolumn=False):
+    """Uses an MDF model to build a complete set of load sheets suitable for use in the Submission Portal.  Returns a dictionary of dataframes with the node as the key.
+    NOTE: The foreign key (node.property) field will be added to the loadsheet for the node identified as the src for the edge.
+
     :param mdf: MDF Model Object
-    :rtype: Dictionary.  Keys are nodes, values are dataframes that can be printed to CSV and used as load sheets
+    :type mdf: Dictionary.  Keys are nodes, values are dataframes that can be printed to CSV and used as load sheets
+    :param reverse: Put the node.property filed in the DST node inseatd of the SRC node.
+    :type reverse: Boolean, default Fase (linking field put in SRC node.  Set to True to put linking field in DST node)
+    :param typecolumn: Adds the 'type' column to the loadsheets
+    :type typecolumn: Boolean, default False.  Set to True to add type column.
+    :return: A dictionary with the node names as key and a pandas dataframe version of the loadsheet as the value
+    :rtype: Dictionary fo dataframe
     """
 
     loadsheets = {}
@@ -577,18 +587,30 @@ def mdfBuildLoadSheets(mdf):
             else:
                 nodelist.append(prop)
         # Now need to add the relationship columns.  There are usually expressed as node.property
-        srcedges = mdf.model.edges_by_src(mdf.model.nodes[node])
+        if reverse:
+            srcedges = mdf.model.edges_by_dst(mdf.model.nodes[node])
+        else:
+            srcedges = mdf.model.edges_by_src(mdf.model.nodes[node])
         for srcedge in srcedges:
             # Need to find the destination node:
-            dstnode = srcedge.dst.handle
+            if reverse:
+                dstnode = srcedge.src.handle
+            else:
+                dstnode = srcedge.dst.handle
             #Now get the properties for that node
             dstprops = mdf.model.nodes[dstnode].props
             reqlist = []
             for dstprop in dstprops:
-                # Relationship columns are based on key columns in the dst noe
-                if mdf.model.props[(dstnode, dstprop)].get_attr_dict()['is_key'] == 'True':
-                    reqlist.append(dstnode+'.'+dstprop)
-            nodelist.extend(reqlist)
+                # Relationship columns are based on key columns in the dst node
+                if 'is_key' in mdf.props[(dstnode, dstprop)].get_attr_dict():
+                    if mdf.model.props[(dstnode, dstprop)].get_attr_dict()['is_key'] == 'True':
+                        reqlist.append(f"{dstnode}.{dstprop}")
+            #nodelist.extend(reqlist)
+            if len(reqlist) > 0:
+                for entry in reqlist:
+                    nodelist.insert(0, entry)
+            if typecolumn:
+                nodelist.insert(0, 'type')
 
         load_df = pd.DataFrame(columns=nodelist)
         loadsheets[node] = load_df
