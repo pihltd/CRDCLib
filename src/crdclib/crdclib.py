@@ -575,22 +575,22 @@ def mdfBuildLoadSheets(mdf, reverse=False, typecolumn=False):
     """
 
     loadsheets = {}
-    nodes = mdf.model.nodes
+    nodes = mdf.nodes
     for node in nodes:
-        nodeprops = mdf.model.nodes[node].props
+        nodeprops = mdf.nodes[node].props
         nodelist = []
         for prop in nodeprops:
-            if 'Template' in mdf.model.props[(node, prop)].tags:
+            if 'Template' in mdf.props[(node, prop)].tags:
                 # Remove any property that is set to 'Template: No'
-                if mdf.model.props[(node,prop)].tags['Template'].get_attr_dict()['value'] != 'No':
+                if mdf.props[(node,prop)].tags['Template'].get_attr_dict()['value'] != 'No':
                     nodelist.append(prop)
             else:
                 nodelist.append(prop)
         # Now need to add the relationship columns.  There are usually expressed as node.property
         if reverse:
-            srcedges = mdf.model.edges_by_dst(mdf.model.nodes[node])
+            srcedges = mdf.edges_by_dst(mdf.nodes[node])
         else:
-            srcedges = mdf.model.edges_by_src(mdf.model.nodes[node])
+            srcedges = mdf.edges_by_src(mdf.nodes[node])
         for srcedge in srcedges:
             # Need to find the destination node:
             if reverse:
@@ -598,19 +598,20 @@ def mdfBuildLoadSheets(mdf, reverse=False, typecolumn=False):
             else:
                 dstnode = srcedge.dst.handle
             #Now get the properties for that node
-            dstprops = mdf.model.nodes[dstnode].props
+            dstprops = mdf.nodes[dstnode].props
             reqlist = []
             for dstprop in dstprops:
                 # Relationship columns are based on key columns in the dst node
                 if 'is_key' in mdf.props[(dstnode, dstprop)].get_attr_dict():
-                    if mdf.model.props[(dstnode, dstprop)].get_attr_dict()['is_key'] == 'True':
+                    if mdf.props[(dstnode, dstprop)].get_attr_dict()['is_key'] == 'True':
                         reqlist.append(f"{dstnode}.{dstprop}")
             #nodelist.extend(reqlist)
             if len(reqlist) > 0:
                 for entry in reqlist:
                     nodelist.insert(0, entry)
-            if typecolumn:
-                nodelist.insert(0, 'type')
+            
+        if typecolumn:
+            nodelist.insert(0, 'type')
 
         load_df = pd.DataFrame(columns=nodelist)
         loadsheets[node] = load_df
