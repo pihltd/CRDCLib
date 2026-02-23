@@ -23,4 +23,5 @@ test/test_mdfAddProperty.py
 test/test_mdfAddTags.py
 test/test_mdfAddTerms.py
 test/test_mdfAnnotateTerms.py
+test/test_mdfBuildLoadsheets.py
 test/test_readyaml.py
