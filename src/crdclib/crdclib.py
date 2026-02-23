@@ -609,8 +609,9 @@ def mdfBuildLoadSheets(mdf, reverse=False, typecolumn=False):
             if len(reqlist) > 0:
                 for entry in reqlist:
                     nodelist.insert(0, entry)
-            if typecolumn:
-                nodelist.insert(0, 'type')
+            
+        if typecolumn:
+            nodelist.insert(0, 'type')
 
         load_df = pd.DataFrame(columns=nodelist)
         loadsheets[node] = load_df
