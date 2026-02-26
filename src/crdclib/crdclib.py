@@ -114,6 +114,39 @@ def getCDEInfo(cdeid, version=None):
 
 
 
+def getCDEPVList(cdeid, version=None):
+    """ This will query the caDSR API with the provided CDE ID and version and return the permissible value list if there is one.  If no version is supplied, the latest version is returned.
+    
+    :param cde_id: CDE Public identifier
+    :type cde_id: Integer
+    :param cde_version: The version of the CDE to be queried.  If not supplied the latest version will be returned
+    :type cde_version: String, optional
+    :rtype: List of permissible values, None if no permissible values found.   
+    """
+    if version is None:
+        url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cdeid)
+    else:
+        url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cdeid)+"?version="+str(version)
+    headers = {'accept':'application/json'}
+
+    try:
+        results = requests.get(url, headers = headers)
+    except requests.exceptions.HTTPError as e:
+        print(e)
+    if results.status_code == 200:
+        pvlist = []
+        results = json.loads(results.content.decode())
+        if results['DataElement']['ValueDomain']['type'] == 'Enumerated':
+            for pventry in results['DataElement']['ValueDomain']['PermissibleValues']:
+                pvlist.append(pventry['value'])
+            return pvlist
+        else:
+            return None
+    else:
+        return [f"Error Status Code: {results.status_code}"]
+
+
+
 
 def runBentoAPIQuery(url, query, variables=None):
     """Runs a GrpahQL Query against the Bento instance specified in the URL
@@ -305,7 +338,7 @@ def getSTSCCPVs(id = None, version = None, model = False):
                 else:
                     final = None
             elif len(cdejson['permissibleValues']) > 0:
-                print('CDE is not a list but is > 0')
+                #print('CDE is not a list but is > 0')
                 for pv in cdejson['permissibleValues']:
                     final[pv['ncit_concept_code']] = pv['value']
             else:

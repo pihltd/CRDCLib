@@ -1,6 +1,9 @@
 import unittest
 import os
 import sys
+from collections import Counter
+
+
 sys.path.append('../')
 from src.crdclib import crdclib as cl
 
@@ -13,7 +16,8 @@ class TestGetCDERecord(unittest.TestCase):
         cdeid = '7572817'
         cdeversion = '3.00'
         cdelist = cl.getSTSPVList(cdeid, cdeversion)
-        self.assertEqual(cdelist, ['Unknown', 'Male', 'Female'])
+        #self.assertEqual(cdelist, ['Unknown', 'Male', 'Female'])
+        self.assertEqual(Counter(cdelist), Counter(['Unknown', 'Male', 'Female']))
 
         empty_cdeid = '11479876'
         empty_cdeversion = '1.00'

@@ -14,13 +14,11 @@ class TestGetCDERecord(unittest.TestCase):
         cdeid = '7572817'
         cdeversion = '3.00'
         cdeinfo = cl.getSTSCCPVs(cdeid, cdeversion)
-        print(f"cdeinfo:\t{cdeinfo}")
-        self.assertEqual(cdeinfo, {'C17998':'Unknown', 'C20197':'Male', 'C16576':'Female'})
+        self.assertDictEqual(cdeinfo, {'C17998':'Unknown', 'C20197':'Male', 'C16576':'Female'})
         empty_cdeid = '11479876'
         empty_cdeversion = '1.00'
         empty_cdeinfo = cl.getSTSCCPVs(empty_cdeid, empty_cdeversion)
-        print(f"empty CDE info:\t{empty_cdeinfo}")
-        self.assertEqual(empty_cdeinfo, None)
+        self.assertIsNone(empty_cdeinfo)
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
