@@ -32,7 +32,6 @@ class TestAnnotateMDFTerms(unittest.TestCase):
         # Edges in the loadsheet are expressed as node.property.  Check that they exist
         for node, loadsheet in loadsheets.items():
             sheetprops = loadsheet.columns.tolist()
-            #print(f"Node: {node}\nProps: {sheetprops}")
             for sheetprop in sheetprops:
                 if "." in sheetprop:
                     temp = sheetprop.split(".")
@@ -40,7 +39,6 @@ class TestAnnotateMDFTerms(unittest.TestCase):
                     tempprop = temp[1]
                     testsheet = loadsheets[tempnode]
                     testprops = testsheet.columns.tolist()
-                    #print(f"Source node: {tempnode}\t dervied from {sheetprop}\n Testprops: {testprops}")
                     self.assertIn(tempprop, testprops)
 
 

@@ -1,0 +1,29 @@
+Handle: CRDC
+Nodes:
+  Program:
+    Props:
+    - name
+    - short_name
+    Tags:
+      Category: Administrative
+  Study:
+    Props:
+    - biospecimen_collection
+    - dbgap_accession
+    - enrollment_beginning_year
+    - enrollment_ending_year
+    - funding_agency
+    - grant_id
+    - participant_count
+    - study_acronym
+    - study_beginning_year
+    - study_description
+    - study_ending_year
+    - study_id
+    - study_name
+    - study_status
+    - study_type
+    Tags:
+      Category: Administrative
+Relationships: {}
+Version: '0.1'

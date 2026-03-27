@@ -5,6 +5,7 @@ import json
 import re
 import os
 from bento_meta.model import Node, Property, Term, Tag, Edge
+from bento_mdf import MDFWriter
 import pandas as pd
 
 
@@ -650,4 +651,31 @@ def mdfBuildLoadSheets(mdf, reverse=False, typecolumn=False):
         loadsheets[node] = load_df
     return loadsheets
 
-    
+
+
+def mdfWriteModelFiles(mdf, sectionlist, writedir):
+    """
+    Writes out an mdf model object to one or more YAML files
+
+    :param mdf: MDF Model Object
+    :type mdf: MDF model
+    :param sectionlist: A list of the sections that should be printed.  Allowed value are Model, PropDefinitions, Terms, Relationships.
+    :type sectionlist: List
+    :param writedir: The direcotory to write the MDF files into
+    :type writedir: String
+    """
+
+    mdfdict = json.loads(json.dumps(MDFWriter(mdf).mdf))
+    allowedsectionlist = ['Model', 'PropDefintions', 'Terms', 'Relationships']
+
+    if len(sectionlist) > 1:
+        for section in sectionlist:
+            if section in allowedsectionlist:
+                if section != 'Model':
+                    filename = f"{writedir}{mdf.handle}-model-{section.lower()}.yml"
+                    printnode = {}
+                    printnode[section] = mdfdict.pop(section, None)
+                    writeYAML(filename=filename, jsonobj=printnode)
+    #Now write out whatever is left.  If Model is only section, it all gets printed
+    filename = f"{writedir}{mdf.handle}-model.yml"
+    writeYAML(filename=filename, jsonobj=mdfdict)
