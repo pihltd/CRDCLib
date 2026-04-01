@@ -14,6 +14,7 @@ test/test_cleanstring.py
 test/test_dhAPICall.py
 test/test_getAPICreds.py
 test/test_getCDE.py
+test/test_getCDEPVList.py
 test/test_getSTSCCPVs.py
 test/test_getSTSPVList.py
 test/test_mdfAddEdges.py
@@ -24,4 +25,5 @@ test/test_mdfAddTags.py
 test/test_mdfAddTerms.py
 test/test_mdfAnnotateTerms.py
 test/test_mdfBuildLoadsheets.py
+test/test_mdfWriteModelFiles.py
 test/test_readyaml.py
