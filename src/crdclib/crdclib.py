@@ -37,7 +37,7 @@ def writeYAML(filename, jsonobj):
     """
 
     with open(filename, 'w') as f:
-        yaml.dump(jsonobj, f)
+        yaml.dump(jsonobj, f, sort_keys=False)
     f.close()
 
 
