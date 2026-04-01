@@ -5,6 +5,7 @@ import json
 import re
 import os
 from bento_meta.model import Node, Property, Term, Tag, Edge
+from bento_mdf import MDFWriter
 import pandas as pd
 
 
@@ -36,7 +37,7 @@ def writeYAML(filename, jsonobj):
     """
 
     with open(filename, 'w') as f:
-        yaml.dump(jsonobj, f)
+        yaml.dump(jsonobj, f, sort_keys=False)
     f.close()
 
 
@@ -111,6 +112,39 @@ def getCDEInfo(cdeid, version=None):
     else:
         cdename = 'caDSR Name Error'
     return {'cdename':cdename, 'cdedef':definition, 'cdever':cdeversion}
+
+
+
+def getCDEPVList(cdeid, version=None):
+    """ This will query the caDSR API with the provided CDE ID and version and return the permissible value list if there is one.  If no version is supplied, the latest version is returned.
+    
+    :param cde_id: CDE Public identifier
+    :type cde_id: Integer
+    :param cde_version: The version of the CDE to be queried.  If not supplied the latest version will be returned
+    :type cde_version: String, optional
+    :rtype: List of permissible values, None if no permissible values found.   
+    """
+    if version is None:
+        url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cdeid)
+    else:
+        url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cdeid)+"?version="+str(version)
+    headers = {'accept':'application/json'}
+
+    try:
+        results = requests.get(url, headers = headers)
+    except requests.exceptions.HTTPError as e:
+        print(e)
+    if results.status_code == 200:
+        pvlist = []
+        results = json.loads(results.content.decode())
+        if results['DataElement']['ValueDomain']['type'] == 'Enumerated':
+            for pventry in results['DataElement']['ValueDomain']['PermissibleValues']:
+                pvlist.append(pventry['value'])
+            return pvlist
+        else:
+            return None
+    else:
+        return [f"Error Status Code: {results.status_code}"]
 
 
 
@@ -305,7 +339,7 @@ def getSTSCCPVs(id = None, version = None, model = False):
                 else:
                     final = None
             elif len(cdejson['permissibleValues']) > 0:
-                print('CDE is not a list but is > 0')
+                #print('CDE is not a list but is > 0')
                 for pv in cdejson['permissibleValues']:
                     final[pv['ncit_concept_code']] = pv['value']
             else:
@@ -617,4 +651,31 @@ def mdfBuildLoadSheets(mdf, reverse=False, typecolumn=False):
         loadsheets[node] = load_df
     return loadsheets
 
-    
+
+
+def mdfWriteModelFiles(mdf, sectionlist, writedir):
+    """
+    Writes out an mdf model object to one or more YAML files
+
+    :param mdf: MDF Model Object
+    :type mdf: MDF model
+    :param sectionlist: A list of the sections that should be printed.  Allowed value are Model, PropDefinitions, Terms, Relationships.
+    :type sectionlist: List
+    :param writedir: The direcotory to write the MDF files into
+    :type writedir: String
+    """
+
+    mdfdict = json.loads(json.dumps(MDFWriter(mdf).mdf))
+    allowedsectionlist = ['Model', 'PropDefintions', 'Terms', 'Relationships']
+
+    if len(sectionlist) > 1:
+        for section in sectionlist:
+            if section in allowedsectionlist:
+                if section != 'Model':
+                    filename = f"{writedir}{mdf.handle}-model-{section.lower()}.yml"
+                    printnode = {}
+                    printnode[section] = mdfdict.pop(section, None)
+                    writeYAML(filename=filename, jsonobj=printnode)
+    #Now write out whatever is left.  If Model is only section, it all gets printed
+    filename = f"{writedir}{mdf.handle}-model.yml"
+    writeYAML(filename=filename, jsonobj=mdfdict)
