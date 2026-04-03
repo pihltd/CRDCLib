@@ -27,17 +27,19 @@ def readYAML(yamlfile):
 
 
 
-def writeYAML(filename, jsonobj):
+def writeYAML(filename, jsonobj, sort=False):
     """Takes a filename and JSON object/dictionary and writes out a basic yaml file
 
-    :param filename: A full path to the output file
+    :param filename: A full path to the output file.
     :type filename: String
-    :param jsonobj: A dictionary to be written as YAML
+    :param jsonobj: A dictionary to be written as YAML.
     :type jsonobj: Dictionary
+    :param sort: Alphabetically sort keys.  Optional and default is False.
+    :type sort: Boolean
     """
 
     with open(filename, 'w') as f:
-        yaml.dump(jsonobj, f, sort_keys=False)
+        yaml.dump(jsonobj, f, sort_keys=sort)
     f.close()
 
 
