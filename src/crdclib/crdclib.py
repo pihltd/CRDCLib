@@ -553,6 +553,8 @@ def mdfAddTags(mdfmodel, objecttype, objectkey, tagdict):
     return mdfmodel
 
 
+
+
 def mdfBuildLoadSheets(mdf, reverse=False, typecolumn=False):
     """Uses an MDF model to build a complete set of load sheets suitable for use in the Submission Portal.  Returns a dictionary of dataframes with the node as the key.
     NOTE: The foreign key (node.property) field will be added to the loadsheet for the node identified as the src for the edge.
@@ -614,7 +616,7 @@ def mdfBuildLoadSheets(mdf, reverse=False, typecolumn=False):
 
 def mdfWriteModelFiles(mdf, sectionlist, writedir):
     """
-    Writes out an mdf model object to one or more YAML files
+    Writes out an mdf model object to one or more YAML files.  Does some sorting to get the YAML in proper order (Handle/Version/Nodes/Properties)
 
     :param mdf: MDF Model Object
     :type mdf: MDF model
@@ -624,8 +626,17 @@ def mdfWriteModelFiles(mdf, sectionlist, writedir):
     :type writedir: String
     """
 
-    mdfdict = json.loads(json.dumps(MDFWriter(mdf).mdf))
-    allowedsectionlist = ['Model', 'PropDefintions', 'Terms', 'Relationships']
+    tempdict = json.loads(json.dumps(MDFWriter(mdf).mdf))
+    mdfdict = {}
+    allowedsectionlist = ['Handle', 'Version', 'Nodes', 'Relationships', 'PropDefinitions', 'Terms']
+
+    #Sorts keys for order in yaml
+    for entry in allowedsectionlist:
+        if entry in tempdict.keys():
+            mdfdict[entry] = tempdict[entry]
+    for key in tempdict.keys():
+        if key not in allowedsectionlist:
+            mdfdict[key] = tempdict[key]
 
     if len(sectionlist) > 1:
         for section in sectionlist:

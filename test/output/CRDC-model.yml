@@ -1,12 +1,15 @@
 Handle: CRDC
+Version: '0.1'
 Nodes:
   Program:
+    Tags:
+      Category: Administrative
     Props:
     - name
     - short_name
+  Study:
     Tags:
       Category: Administrative
-  Study:
     Props:
     - biospecimen_collection
     - dbgap_accession
@@ -23,396 +26,393 @@ Nodes:
     - study_name
     - study_status
     - study_type
-    Tags:
-      Category: Administrative
+Relationships: {}
 PropDefinitions:
-  biospecimen_collection:
-    Desc: A yes or no response to indicate whether or not a biospecimen was collected
-      as part of a Study.
-    Key: false
+  name:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Program Name
+      Origin: caDSR
+      Definition: The name applied to a research program.
+      Version: '1'
+      Code: 15846335
+    Desc: The name applied to a research program.
     Nul: false
-    Req: 'False'
+    Req: 'True'
     Strict: true
+    Key: false
+    Type: enum
+  short_name:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Program Short Name
+      Origin: caDSR
+      Definition: The shortened name applied to a research program.
+      Version: '1'
+      Code: 15846845
+    Desc: The shortened name applied to a research program.
+    Nul: false
+    Req: 'True'
+    Strict: true
+    Key: false
+    Type: enum
+  biospecimen_collection:
     Tags:
       Template: 'Yes'
     Term:
-    - Code: 16979768
+    - Value: Research Activity Biospecimen Collection Indicator
+      Origin: caDSR
       Definition: A yes or no response to indicate whether or not a biospecimen was
         collected as part of a Study.
-      Origin: caDSR
-      Value: Research Activity Biospecimen Collection Indicator
       Version: '1'
+      Code: 16979768
+    Desc: A yes or no response to indicate whether or not a biospecimen was collected
+      as part of a Study.
+    Nul: false
+    Req: 'False'
+    Strict: true
+    Key: false
     Type: enum
   dbgap_accession:
-    Desc: A stable unique alphanumeric identifier assigned to a study and any objects
-      by the database of Genotypes and Phenotypes (dbGaP).
-    Key: false
-    Nul: false
-    Req: 'False'
-    Strict: true
     Tags:
       Template: 'Yes'
     Term:
-    - Code: 11524544
+    - Value: Research Activity dbGaP Accession Number Identifier
+      Origin: caDSR
       Definition: A stable unique alphanumeric identifier assigned to a study and
         any objects by the database of Genotypes and Phenotypes (dbGaP).
-      Origin: caDSR
-      Value: Research Activity dbGaP Accession Number Identifier
       Version: '1'
+      Code: 11524544
+    Desc: A stable unique alphanumeric identifier assigned to a study and any objects
+      by the database of Genotypes and Phenotypes (dbGaP).
+    Nul: false
+    Req: 'False'
+    Strict: true
+    Key: false
     Type: string
   enrollment_beginning_year:
-    Desc: The year in which the study began enrolling participants.
-    Key: false
-    Nul: false
-    Req: 'False'
-    Strict: true
     Tags:
       Template: 'No'
     Term:
-    - Code: 16979766
-      Definition: The year in which the study began enrolling participants.
+    - Value: Research Activity Study Enrollment Start Year Date
       Origin: caDSR
-      Value: Research Activity Study Enrollment Start Year Date
+      Definition: The year in which the study began enrolling participants.
       Version: '1'
+      Code: 16979766
+    Desc: The year in which the study began enrolling participants.
+    Nul: false
+    Req: 'False'
+    Strict: true
+    Key: false
     Type: int
   enrollment_ending_year:
-    Desc: The year in which the study stopped enrolling participants.
-    Key: false
-    Nul: false
-    Req: 'False'
-    Strict: true
     Tags:
       Template: 'No'
     Term:
-    - Code: 16979767
-      Definition: The year in which the study stopped enrolling participants.
+    - Value: Research Activity Study Enrollment End Year Date
       Origin: caDSR
-      Value: Research Activity Study Enrollment End Year Date
+      Definition: The year in which the study stopped enrolling participants.
       Version: '1'
+      Code: 16979767
+    Desc: The year in which the study stopped enrolling participants.
+    Nul: false
+    Req: 'False'
+    Strict: true
+    Key: false
     Type: int
   funding_agency:
-    Desc: The name of the funding source organization or sponsor.
-    Key: false
-    Nul: false
-    Req: 'True'
-    Strict: true
     Tags:
       Template: 'No'
     Term:
-    - Code: 16002760
-      Definition: The name of the funding source organization or sponsor.
+    - Value: Study Administration Funding Agency Organization Name
       Origin: caDSR
-      Value: Study Administration Funding Agency Organization Name
+      Definition: The name of the funding source organization or sponsor.
       Version: '1'
+      Code: 16002760
+    Desc: The name of the funding source organization or sponsor.
+    Nul: false
+    Req: 'True'
+    Strict: true
+    Key: false
     Type: string
   grant_id:
-    Desc: One or more characters used to identify a grant.
-    Key: false
-    Nul: false
-    Req: 'True'
-    Strict: true
     Tags:
       Template: 'No'
     Term:
-    - Code: 16002823
+    - Value: Study Administration Grant Funding Number Identifier
+      Origin: caDSR
       Definition: One or more characters used to identify a grant.
-      Origin: caDSR
-      Value: Study Administration Grant Funding Number Identifier
       Version: '1'
-    Type: string
-  name:
-    Desc: The name applied to a research program.
-    Key: false
+      Code: 16002823
+    Desc: One or more characters used to identify a grant.
     Nul: false
     Req: 'True'
     Strict: true
-    Tags:
-      Template: 'No'
-    Term:
-    - Code: 15846335
-      Definition: The name applied to a research program.
-      Origin: caDSR
-      Value: Study Administration Program Name
-      Version: '1'
-    Type: enum
-  participant_count:
-    Desc: The number of participants in the study.
     Key: false
-    Nul: false
-    Req: 'False'
-    Strict: true
+    Type: string
+  participant_count:
     Tags:
       Template: 'Yes'
     Term:
-    - Code: 11555662
+    - Value: Research Activity Unique Subjects Count
+      Origin: caDSR
       Definition: The number of participants in the study.
-      Origin: caDSR
-      Value: Research Activity Unique Subjects Count
       Version: '1'
+      Code: 11555662
+    Desc: The number of participants in the study.
+    Nul: false
+    Req: 'False'
+    Strict: true
+    Key: false
     Type: number
-  short_name:
-    Desc: The shortened name applied to a research program.
-    Key: false
-    Nul: false
-    Req: 'True'
-    Strict: true
-    Tags:
-      Template: 'No'
-    Term:
-    - Code: 15846845
-      Definition: The shortened name applied to a research program.
-      Origin: caDSR
-      Value: Study Administration Program Short Name
-      Version: '1'
-    Type: enum
   study_acronym:
-    Desc: "The acronym\_or\_abbreviated\_form of\_the\_title\_for a\_research data\_\
-      collection."
-    Key: false
-    Nul: false
-    Req: 'True'
-    Strict: true
     Tags:
       Template: 'No'
     Term:
-    - Code: 11459812
+    - Value: Study Administration Study Short Name Text
+      Origin: caDSR
       Definition: "The acronym\_or\_abbreviated\_form of\_the\_title\_for a\_research\
         \ data\_collection."
-      Origin: caDSR
-      Value: Study Administration Study Short Name Text
       Version: '4'
+      Code: 11459812
+    Desc: "The acronym\_or\_abbreviated\_form of\_the\_title\_for a\_research data\_\
+      collection."
+    Nul: false
+    Req: 'True'
+    Strict: true
+    Key: false
     Type: string
   study_beginning_year:
-    Desc: The year in which the study started.
-    Key: false
-    Nul: false
-    Req: 'False'
-    Strict: true
     Tags:
       Template: 'No'
     Term:
-    - Code: 15607845
-      Definition: The year in which the study started.
+    - Value: Study Administration Study Start Year Date
       Origin: caDSR
-      Value: Study Administration Study Start Year Date
+      Definition: The year in which the study started.
       Version: '1'
+      Code: 15607845
+    Desc: The year in which the study started.
+    Nul: false
+    Req: 'False'
+    Strict: true
+    Key: false
     Type: int
   study_description:
-    Desc: A textual description or explanation of a systematic investigation into
-      a subject or research activity.
-    Key: false
-    Nul: false
-    Req: 'True'
-    Strict: true
     Tags:
       Template: 'No'
     Term:
-    - Code: 16188024
+    - Value: Research Activity Study Description Text
+      Origin: caDSR
       Definition: A textual description or explanation of a systematic investigation
         into a subject or research activity.
-      Origin: caDSR
-      Value: Research Activity Study Description Text
       Version: '1'
+      Code: 16188024
+    Desc: A textual description or explanation of a systematic investigation into
+      a subject or research activity.
+    Nul: false
+    Req: 'True'
+    Strict: true
+    Key: false
     Type: string
   study_ending_year:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Study End Year Date
+      Origin: caDSR
+      Definition: The year in which the study ended.
+      Version: '1'
+      Code: 15607913
     Desc: The year in which the study ended.
-    Key: false
     Nul: false
     Req: 'False'
     Strict: true
-    Tags:
-      Template: 'No'
-    Term:
-    - Code: 15607913
-      Definition: The year in which the study ended.
-      Origin: caDSR
-      Value: Study Administration Study End Year Date
-      Version: '1'
+    Key: false
     Type: string
   study_id:
-    Desc: A study-level administrative activity that is essential to the efficient
-      and/or effective coordination and execution of a clinical or research study
-      and is independent of a study subject.:A sequence of characters used to identify,
-      name, or characterize the study.:One or more characters used to identify, name,
-      or characterize the nature, properties, or contents of a thing.
-    Key: false
-    Nul: false
-    Req: 'True'
-    Strict: true
     Tags:
       Template: 'Yes'
     Term:
-    - Code: 16979764
+    - Value: Study Administration Study Identifier
+      Origin: caDSR
       Definition: A study-level administrative activity that is essential to the efficient
         and/or effective coordination and execution of a clinical or research study
         and is independent of a study subject.:A sequence of characters used to identify,
         name, or characterize the study.:One or more characters used to identify,
         name, or characterize the nature, properties, or contents of a thing.
-      Origin: caDSR
-      Value: Study Administration Study Identifier
       Version: '1'
-    Type: string
-  study_name:
-    Desc: "The\_narrative title\_used as\_a\_textual\_label\_for\_a\_research data\_\
-      collection."
-    Key: false
+      Code: 16979764
+    Desc: A study-level administrative activity that is essential to the efficient
+      and/or effective coordination and execution of a clinical or research study
+      and is independent of a study subject.:A sequence of characters used to identify,
+      name, or characterize the study.:One or more characters used to identify, name,
+      or characterize the nature, properties, or contents of a thing.
     Nul: false
     Req: 'True'
     Strict: true
+    Key: false
+    Type: string
+  study_name:
     Tags:
       Template: 'No'
     Term:
-    - Code: 11459810
+    - Value: Study Administration Study Name Text
+      Origin: caDSR
       Definition: "The\_narrative title\_used as\_a\_textual\_label\_for\_a\_research\
         \ data\_collection."
-      Origin: caDSR
-      Value: Study Administration Study Name Text
       Version: '4'
+      Code: 11459810
+    Desc: "The\_narrative title\_used as\_a\_textual\_label\_for\_a\_research data\_\
+      collection."
+    Nul: false
+    Req: 'True'
+    Strict: true
+    Key: false
     Type: string
   study_status:
-    Desc: The status of the study.
-    Key: false
-    Nul: false
-    Req: 'False'
-    Strict: true
     Tags:
       Template: 'Yes'
     Term:
-    - Code: 15607838
-      Definition: The status of the study.
+    - Value: Study Administration Study Status
       Origin: caDSR
-      Value: Study Administration Study Status
+      Definition: The status of the study.
       Version: '1'
+      Code: 15607838
+    Desc: The status of the study.
+    Nul: false
+    Req: 'False'
+    Strict: true
+    Key: false
     Type: enum
   study_type:
-    Desc: A classification of the study based upon the primary intent of the study's
-      activities.
-    Key: false
-    Nul: false
-    Req: 'True'
-    Strict: true
     Tags:
       Template: 'No'
     Term:
-    - Code: 11160683
+    - Value: Study Primary Purpose Type
+      Origin: caDSR
       Definition: A classification of the study based upon the primary intent of the
         study's activities.
-      Origin: caDSR
-      Value: Study Primary Purpose Type
       Version: '1'
+      Code: 11160683
+    Desc: A classification of the study based upon the primary intent of the study's
+      activities.
+    Nul: false
+    Req: 'True'
+    Strict: true
+    Key: false
     Type: enum
-Relationships: {}
 Terms:
   research_activity_biospecimen_collection_indicator:
-    Code: 16979768
+    Value: Research Activity Biospecimen Collection Indicator
+    Origin: caDSR
     Definition: A yes or no response to indicate whether or not a biospecimen was
       collected as part of a Study.
-    Origin: caDSR
-    Value: Research Activity Biospecimen Collection Indicator
     Version: '1'
+    Code: 16979768
   research_activity_db_ga_p_accession_number_identifier:
-    Code: 11524544
+    Value: Research Activity dbGaP Accession Number Identifier
+    Origin: caDSR
     Definition: A stable unique alphanumeric identifier assigned to a study and any
       objects by the database of Genotypes and Phenotypes (dbGaP).
-    Origin: caDSR
-    Value: Research Activity dbGaP Accession Number Identifier
     Version: '1'
+    Code: 11524544
   research_activity_study_description_text:
-    Code: 16188024
+    Value: Research Activity Study Description Text
+    Origin: caDSR
     Definition: A textual description or explanation of a systematic investigation
       into a subject or research activity.
-    Origin: caDSR
-    Value: Research Activity Study Description Text
     Version: '1'
+    Code: 16188024
   research_activity_study_enrollment_end_year_date:
-    Code: 16979767
-    Definition: The year in which the study stopped enrolling participants.
-    Origin: caDSR
     Value: Research Activity Study Enrollment End Year Date
+    Origin: caDSR
+    Definition: The year in which the study stopped enrolling participants.
     Version: '1'
+    Code: 16979767
   research_activity_study_enrollment_start_year_date:
-    Code: 16979766
-    Definition: The year in which the study began enrolling participants.
-    Origin: caDSR
     Value: Research Activity Study Enrollment Start Year Date
+    Origin: caDSR
+    Definition: The year in which the study began enrolling participants.
     Version: '1'
+    Code: 16979766
   research_activity_unique_subjects_count:
-    Code: 11555662
-    Definition: The number of participants in the study.
-    Origin: caDSR
     Value: Research Activity Unique Subjects Count
+    Origin: caDSR
+    Definition: The number of participants in the study.
     Version: '1'
+    Code: 11555662
   study_administration_funding_agency_organization_name:
-    Code: 16002760
-    Definition: The name of the funding source organization or sponsor.
-    Origin: caDSR
     Value: Study Administration Funding Agency Organization Name
+    Origin: caDSR
+    Definition: The name of the funding source organization or sponsor.
     Version: '1'
+    Code: 16002760
   study_administration_grant_funding_number_identifier:
-    Code: 16002823
-    Definition: One or more characters used to identify a grant.
-    Origin: caDSR
     Value: Study Administration Grant Funding Number Identifier
+    Origin: caDSR
+    Definition: One or more characters used to identify a grant.
     Version: '1'
+    Code: 16002823
   study_administration_program_name:
-    Code: 15846335
-    Definition: The name applied to a research program.
-    Origin: caDSR
     Value: Study Administration Program Name
+    Origin: caDSR
+    Definition: The name applied to a research program.
     Version: '1'
+    Code: 15846335
   study_administration_program_short_name:
-    Code: 15846845
-    Definition: The shortened name applied to a research program.
-    Origin: caDSR
     Value: Study Administration Program Short Name
-    Version: '1'
-  study_administration_study_end_year_date:
-    Code: 15607913
-    Definition: The year in which the study ended.
     Origin: caDSR
-    Value: Study Administration Study End Year Date
+    Definition: The shortened name applied to a research program.
     Version: '1'
+    Code: 15846845
+  study_administration_study_end_year_date:
+    Value: Study Administration Study End Year Date
+    Origin: caDSR
+    Definition: The year in which the study ended.
+    Version: '1'
+    Code: 15607913
   study_administration_study_identifier:
-    Code: 16979764
+    Value: Study Administration Study Identifier
+    Origin: caDSR
     Definition: A study-level administrative activity that is essential to the efficient
       and/or effective coordination and execution of a clinical or research study
       and is independent of a study subject.:A sequence of characters used to identify,
       name, or characterize the study.:One or more characters used to identify, name,
       or characterize the nature, properties, or contents of a thing.
-    Origin: caDSR
-    Value: Study Administration Study Identifier
     Version: '1'
+    Code: 16979764
   study_administration_study_name_text:
-    Code: 11459810
+    Value: Study Administration Study Name Text
+    Origin: caDSR
     Definition: "The\_narrative title\_used as\_a\_textual\_label\_for\_a\_research\
       \ data\_collection."
-    Origin: caDSR
-    Value: Study Administration Study Name Text
     Version: '4'
+    Code: 11459810
   study_administration_study_short_name_text:
-    Code: 11459812
+    Value: Study Administration Study Short Name Text
+    Origin: caDSR
     Definition: "The acronym\_or\_abbreviated\_form of\_the\_title\_for a\_research\
       \ data\_collection."
-    Origin: caDSR
-    Value: Study Administration Study Short Name Text
     Version: '4'
+    Code: 11459812
   study_administration_study_start_year_date:
-    Code: 15607845
-    Definition: The year in which the study started.
-    Origin: caDSR
     Value: Study Administration Study Start Year Date
-    Version: '1'
-  study_administration_study_status:
-    Code: 15607838
-    Definition: The status of the study.
     Origin: caDSR
-    Value: Study Administration Study Status
+    Definition: The year in which the study started.
     Version: '1'
+    Code: 15607845
+  study_administration_study_status:
+    Value: Study Administration Study Status
+    Origin: caDSR
+    Definition: The status of the study.
+    Version: '1'
+    Code: 15607838
   study_primary_purpose_type:
-    Code: 11160683
+    Value: Study Primary Purpose Type
+    Origin: caDSR
     Definition: A classification of the study based upon the primary intent of the
       study's activities.
-    Origin: caDSR
-    Value: Study Primary Purpose Type
     Version: '1'
-Version: '0.1'
+    Code: 11160683
