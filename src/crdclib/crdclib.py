@@ -626,7 +626,7 @@ def mdfWriteModelFiles(mdf, sectionlist, writedir):
     :type writedir: String
     """
 
-    tempdict = json.loads(json.dumps(MDFWriter(mdf).mdf))
+    tempdict = MDFWriter(mdf).mdf
     mdfdict = {}
     allowedsectionlist = ['Handle', 'Version', 'Nodes', 'Relationships', 'PropDefinitions', 'Terms']
 
