@@ -203,7 +203,6 @@ def dhApiQuery(url, apitoken, query, variables=None):
     :return: If HTTP error, the requests.HTTPError object
     :rtype: request.HTTPError
     """
-
     headers = {"Authorization": f"Bearer {apitoken}"}
     try:
         if variables is None:
@@ -271,7 +270,7 @@ def getSTSCCPVs(id = None, version = None, model = False):
     :rtype: Dictionary of {concept code:permissible value}
     """
 
-    base_url = "https://sts.cancer.gov/v1/terms/"
+    base_url = "https://sts.cancer.gov/v2/terms/"
     headers = {'accept': 'application/json'}
     url = None
     
@@ -290,7 +289,7 @@ def getSTSCCPVs(id = None, version = None, model = False):
 
         if result.status_code == 200:
             # Need to do the parsing here
-            cdejson = result.json()
+            cdejson = result.json()[0]
             if type(cdejson['CDECode']) is list:
                 if len(cdejson['permissibleValues'][0]) > 0:
                     for pv in cdejson['permissibleValues'][0]:
@@ -323,7 +322,7 @@ def getSTSPVList(cdeid, cdeversion):
     :rtype: List of [permissible value]
     """
 
-    base_url = "https://sts.cancer.gov/v1/terms/"
+    base_url = "https://sts.cancer.gov/v2/terms/"
     headers = {'accept': 'application/json'}
     url =  base_url+f"cde-pvs/{cdeid}/{cdeversion}/pvs"
 
@@ -332,7 +331,7 @@ def getSTSPVList(cdeid, cdeversion):
         
         if result.status_code == 200:
             pvlist = []
-            cdejson = result.json()
+            cdejson = result.json()[0]
             # If there is a list of CDE codes in the returned data, the PVs are also in a list
             if type(cdejson['CDECode']) is list:
                 for entry in cdejson['permissibleValues']:
@@ -349,6 +348,44 @@ def getSTSPVList(cdeid, cdeversion):
     except requests.exceptions.HTTPError as e:
         return ("HTTP Error: {e}")
 
+
+
+def getSTSPVListByProperty(modelhandle, propertyhandle, modelversion=None, includeSynonyms = False):
+    """Uses STS to get a list of PVs based on the model and property names.  Will includ nullCDE values if the model indicates they are used
+    
+    :param modelhandle: The name of the model, like GC, CTDC, ICDC, etc.
+    :type modelhanlde: String
+    :param propertyhandle: The name of the propety
+    :type propertyhandle: String
+    :param modelversion: Optional, the version of the model to query
+    :type modelversion: String X.Y.Z
+    :param includeSynonyms: Optional, set to True to return a list of dictionary [{PV:[list of synonyms]}]
+    :rtype: List of permissible values or list of dictionary containinf PVs and synonyms
+    """
+    
+    if modelversion is not None:
+        url = f"https://sts.cancer.gov/v2/terms/model-pvs/{modelhandle}/{propertyhandle}?version={modelversion}&skip=0&limit=0"
+    else:
+        url = f"https://sts.cancer.gov/v2/terms/model-pvs/{modelhandle}/{propertyhandle}?skip=0&limit=0"
+    headers =  {'accept': 'application/json'}
+    
+    try:
+        result = requests.get(url = url, headers = headers)
+        
+        if result.status_code == 200:
+            pvlist = []
+            pvjson = result.json()[0]
+            for pv in pvjson['permissibleValues']:
+                if includeSynonyms:
+                    pvlist.append({pv['value']:pv['synonyms']})
+                else:
+                    pvlist.append(pv['value'])
+
+            return pvlist
+        else:
+            return(result.json())
+    except requests.exceptions.HTTPError as e:
+        return ("HTTP Error: {e}")
 
 
 
@@ -600,7 +637,6 @@ def mdfBuildLoadSheets(mdf, reverse=False, typecolumn=False):
                 if 'is_key' in mdf.props[(dstnode, dstprop)].get_attr_dict():
                     if mdf.props[(dstnode, dstprop)].get_attr_dict()['is_key'] == 'True':
                         reqlist.append(f"{dstnode}.{dstprop}")
-            #nodelist.extend(reqlist)
             if len(reqlist) > 0:
                 for entry in reqlist:
                     nodelist.insert(0, entry)
