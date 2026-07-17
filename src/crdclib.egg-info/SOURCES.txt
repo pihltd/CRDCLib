@@ -17,6 +17,7 @@ test/test_getCDE.py
 test/test_getCDEPVList.py
 test/test_getSTSCCPVs.py
 test/test_getSTSPVList.py
+test/test_getSTSPVListByProperty.py
 test/test_mdfAddEdges.py
 test/test_mdfAddEnums.py
 test/test_mdfAddNodes.py
