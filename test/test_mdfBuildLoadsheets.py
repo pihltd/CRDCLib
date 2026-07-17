@@ -12,7 +12,7 @@ class TestAnnotateMDFTerms(unittest.TestCase):
         mdffiles = ['https://raw.githubusercontent.com/CBIIT/cds-model/refs/heads/11.0.3/model-desc/cds-model.yml','https://raw.githubusercontent.com/CBIIT/cds-model/refs/heads/11.0.3/model-desc/cds-model-props.yml']
         mdf = bento_mdf.MDF(*mdffiles)
         mdf = mdf.model
-
+        
         loadsheets = cl.mdfBuildLoadSheets(mdf)
 
         #Check that nodes match
@@ -31,17 +31,14 @@ class TestAnnotateMDFTerms(unittest.TestCase):
 
         # Edges in the loadsheet are expressed as node.property.  Check that they exist
         for node, loadsheet in loadsheets.items():
-            sheetprops = loadsheet.columns.tolist()
-            for sheetprop in sheetprops:
-                if "." in sheetprop:
-                    temp = sheetprop.split(".")
-                    tempnode = temp[0]
-                    tempprop = temp[1]
-                    testsheet = loadsheets[tempnode]
-                    testprops = testsheet.columns.tolist()
-                    self.assertIn(tempprop, testprops)
-
-
+            srcedges = mdf.edges_by_src(node=mdf.nodes[node])
+            for edge in srcedges:
+                dstnode = edge.dst.handle
+                headers = loadsheet.columns.tolist()
+                dstprops = mdf.nodes[dstnode].props
+                for prop in dstprops:
+                    if mdf.props[dstnode,prop].is_key:
+                        self.assertIn(f"{dstnode}.{prop}", headers)
 
 
 
