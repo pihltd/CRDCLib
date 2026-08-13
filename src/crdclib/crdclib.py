@@ -1,6 +1,9 @@
 # A collection of random routines I use frequently
 import yaml
 import requests
+# https://oxylabs.io/blog/python-requests-retry
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
 import json
 import re
 import os
@@ -66,7 +69,12 @@ def getCDERecord(cde_id, cde_version=None):
         url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cde_id)+"?version="+str(cde_version)
     headers = {'accept': 'application/json'}
     try:
-        results = requests.get(url, headers=headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        results = session.get(url=url, headers=headers, timeout=180)
+        #results = requests.get(url, headers=headers)
     except requests.exceptions.HTTPError as e:
         return (f"HTTPError:\n{e}")
     if results.status_code == 200:
@@ -96,7 +104,12 @@ def getCDEInfo(cdeid, version=None):
     headers = {'accept':'application/json'}
 
     try:
-        results = requests.get(url, headers = headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        results = session.get(url=url, headers=headers, timeout=180)
+        #results = requests.get(url, headers = headers)
     except requests.exceptions.HTTPError as e:
         print(e)
     if results.status_code == 200:
@@ -133,7 +146,12 @@ def getCDEPVList(cdeid, version=None):
     headers = {'accept':'application/json'}
 
     try:
-        results = requests.get(url, headers = headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        results = session.get(url=url, headers=headers, timeout=180)
+        #results = requests.get(url, headers = headers)
     except requests.exceptions.HTTPError as e:
         print(e)
     if results.status_code == 200:
