@@ -188,10 +188,16 @@ def runBentoAPIQuery(url, query, variables=None):
     
     headers = {'accept': 'application/json'}
     try:
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
         if variables is None:
-            results = requests.post(url, headers=headers, json={'query': query})
+            results = session.post(url=url, headers=headers, json={'query':query}, timeout=180)
+            #results = requests.post(url, headers=headers, json={'query': query})
         else:
-            results = requests.post(url, headers=headers, json={'query': query, 'variables': variables})
+            results = session.post(url=url, headers=headers, json={'query': query, 'variables': variables}, timeout=180)
+            #results = requests.post(url, headers=headers, json={'query': query, 'variables': variables})
     except requests.exceptions.HTTPError as e:
         return (f"HTTPError:\n{e}")
         
@@ -223,10 +229,16 @@ def dhApiQuery(url, apitoken, query, variables=None):
     """
     headers = {"Authorization": f"Bearer {apitoken}"}
     try:
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
         if variables is None:
-            result = requests.post(url=url, headers=headers, json={"query": query})
+            result = session.post(url=url, headers=headers, json={"query": query}, timeout=160)
+            #result = requests.post(url=url, headers=headers, json={"query": query})
         else:
-            result = requests.post(url=url, headers=headers, json={"query": query, "variables": variables})
+            result = session.post(url=url, headers=headers, json={"query": query, "variables": variables}, timeout=160)
+           # result = requests.post(url=url, headers=headers, json={"query": query, "variables": variables})
         if result.status_code == 200:
             return result.json()
         else:
@@ -303,7 +315,12 @@ def getSTSCCPVs(id = None, version = None, model = False):
     headers = {'accept': 'application/json'}
     final = {}
     try:
-        result = requests.get(url = url, headers = headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        result = session.get(url=url, headers=headers, timeout=160)
+       # result = requests.get(url = url, headers = headers)
 
         if result.status_code == 200:
             # Need to do the parsing here
@@ -345,7 +362,12 @@ def getSTSPVList(cdeid, cdeversion):
     url =  base_url+f"cde-pvs/{cdeid}/{cdeversion}/pvs"
 
     try:
-        result = requests.get(url = url, headers = headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        result = session.get(url=url, headers=headers, timeout=160)
+        #result = requests.get(url = url, headers = headers)
         
         if result.status_code == 200:
             pvlist = []
@@ -388,7 +410,12 @@ def getSTSPVListByProperty(modelhandle, propertyhandle, modelversion=None, inclu
     headers =  {'accept': 'application/json'}
     
     try:
-        result = requests.get(url = url, headers = headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        result = session.get(url=url, headers=headers, timeout=160)
+        #result = requests.get(url = url, headers = headers)
         
         if result.status_code == 200:
             pvlist = []
