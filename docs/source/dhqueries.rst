@@ -134,3 +134,38 @@ CRDCLib DHQuery documentation
     |  dbGaPID
     |  studyName
     |  studyAbbreviation
+
+.. function:: released_study_query
+
+  Query for the Data Explorer that returns a list of released studies
+
+  :param displayname: The display name of the data commons for the study.  Can be ICDC, CTDC, or GC.  Can be individual or list
+  :param first: The number of records to be returned.  If first is set to -1, the API will return all results.
+  :param offset: The number of records to be skipped when returning results.
+  :rtype: | studies
+    | _id
+    | studyName
+    | studyAbbreviation
+    | dataCommons
+
+.. function:: program_study_query
+
+  Returns Programs and all associated studies
+
+  :param None:  This query takes no parameters
+  :rtype: | programs
+    | name
+    | studies
+    |   studyName
+    |  studyAbbreviation
+
+
+.. function:: node_count_query 
+
+  Query for Data Explorer.  Returns counts for each node of a study in a specific Data Commons
+
+  :param dc: The display name of the data commons for the study.  Can be ICDC, CTDC, or GC. 
+  :param: studyID: The study ID (see the study_query, this is the studies._id field)
+  :rtype: | nodes
+    | name
+    | count

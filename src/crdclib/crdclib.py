@@ -766,3 +766,51 @@ def mdfWriteModelFiles(mdf, sectionlist, writedir):
     #Now write out whatever is left.  If Model is only section, it all gets printed
     filename = f"{writedir}{mdf.handle}-model.yml"
     writeYAML(filename=filename, jsonobj=mdfdict)
+
+
+
+def mdfGetEnumInfo(mdf, nodename, propname):
+    """
+    Returns the information from the Enum section of a property, if there is one.  This does NOT return any EDP permissible values.
+    
+    :param mdf: MDF Model Object
+    :type mdf: MDF model
+    :param nodename: The handle of the node for the requested property
+    :type nodename: String
+    :param propname: The handle of the property to be checked for an Enum section
+    :type propname: String
+    :return: A dictionary of the Enum section
+    :rtype: Python dicitonary or None
+    """
+    
+    propobj = mdf.props[(nodename, propname)]
+    if propobj.value_set is None:
+        return None
+    else:
+        final = []
+        for key, value in propobj.value_set.edp_terms.items():
+            final.append({key:value.get_attr_dict()})
+        return final
+
+
+def mdfGetTermInfo(mdf, nodename, propname):
+    """
+    Returns the information from the Term section of a property, if there is one.  
+    
+    :param mdf: MDF Model Object
+    :type mdf: MDF model
+    :param nodename: The handle of the node for the requested property
+    :type nodename: String
+    :param propname: The handle of the property to be checked for a Term section
+    :type propname: String
+    :return: A dictionary of the Term section
+    :rtype: Python dicitonary or None
+    """
+    propobj = mdf.props[(nodename, propname)]
+    if propobj.concept is None:
+        return None
+    else:
+        final = []
+        for key, value in propobj.concept.terms.items():
+            final.append({key:value.get_attr_dict()})
+        return final
