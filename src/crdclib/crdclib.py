@@ -1,6 +1,9 @@
 # A collection of random routines I use frequently
 import yaml
 import requests
+# https://oxylabs.io/blog/python-requests-retry
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
 import json
 import re
 import os
@@ -21,7 +24,8 @@ def readYAML(yamlfile):
     """
 
     with open(yamlfile) as f:
-        yamljson = yaml.load(f, Loader=yaml.FullLoader)
+        #yamljson = yaml.load(f, Loader=yaml.FullLoader)
+        yamljson = yaml.safe_load(f)
     return yamljson
 
 
@@ -39,7 +43,7 @@ def writeYAML(filename, jsonobj, sort=False):
     """
 
     with open(filename, 'w') as f:
-        yaml.dump(jsonobj, f, sort_keys=sort)
+        yaml.safe_dump(jsonobj, f, sort_keys=sort)
     f.close()
 
 
@@ -66,7 +70,11 @@ def getCDERecord(cde_id, cde_version=None):
         url = "https://cadsrapi.cancer.gov/rad/NCIAPI/1.0/api/DataElement/"+str(cde_id)+"?version="+str(cde_version)
     headers = {'accept': 'application/json'}
     try:
-        results = requests.get(url, headers=headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        results = session.get(url=url, headers=headers, timeout=180)
     except requests.exceptions.HTTPError as e:
         return (f"HTTPError:\n{e}")
     if results.status_code == 200:
@@ -96,7 +104,11 @@ def getCDEInfo(cdeid, version=None):
     headers = {'accept':'application/json'}
 
     try:
-        results = requests.get(url, headers = headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        results = session.get(url=url, headers=headers, timeout=180)
     except requests.exceptions.HTTPError as e:
         print(e)
     if results.status_code == 200:
@@ -133,7 +145,11 @@ def getCDEPVList(cdeid, version=None):
     headers = {'accept':'application/json'}
 
     try:
-        results = requests.get(url, headers = headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        results = session.get(url=url, headers=headers, timeout=180)
     except requests.exceptions.HTTPError as e:
         print(e)
     if results.status_code == 200:
@@ -170,10 +186,14 @@ def runBentoAPIQuery(url, query, variables=None):
     
     headers = {'accept': 'application/json'}
     try:
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
         if variables is None:
-            results = requests.post(url, headers=headers, json={'query': query})
+            results = session.post(url=url, headers=headers, json={'query':query}, timeout=180)
         else:
-            results = requests.post(url, headers=headers, json={'query': query, 'variables': variables})
+            results = session.post(url=url, headers=headers, json={'query': query, 'variables': variables}, timeout=180)
     except requests.exceptions.HTTPError as e:
         return (f"HTTPError:\n{e}")
         
@@ -205,10 +225,14 @@ def dhApiQuery(url, apitoken, query, variables=None):
     """
     headers = {"Authorization": f"Bearer {apitoken}"}
     try:
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
         if variables is None:
-            result = requests.post(url=url, headers=headers, json={"query": query})
+            result = session.post(url=url, headers=headers, json={"query": query}, timeout=160)
         else:
-            result = requests.post(url=url, headers=headers, json={"query": query, "variables": variables})
+            result = session.post(url=url, headers=headers, json={"query": query, "variables": variables}, timeout=160)
         if result.status_code == 200:
             return result.json()
         else:
@@ -285,7 +309,11 @@ def getSTSCCPVs(id = None, version = None, model = False):
     headers = {'accept': 'application/json'}
     final = {}
     try:
-        result = requests.get(url = url, headers = headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        result = session.get(url=url, headers=headers, timeout=160)
 
         if result.status_code == 200:
             # Need to do the parsing here
@@ -297,7 +325,6 @@ def getSTSCCPVs(id = None, version = None, model = False):
                 else:
                     final = None
             elif len(cdejson['permissibleValues']) > 0:
-                #print('CDE is not a list but is > 0')
                 for pv in cdejson['permissibleValues']:
                     final[pv['ncit_concept_code']] = pv['value']
             else:
@@ -327,7 +354,11 @@ def getSTSPVList(cdeid, cdeversion):
     url =  base_url+f"cde-pvs/{cdeid}/{cdeversion}/pvs"
 
     try:
-        result = requests.get(url = url, headers = headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        result = session.get(url=url, headers=headers, timeout=160)
         
         if result.status_code == 200:
             pvlist = []
@@ -370,7 +401,11 @@ def getSTSPVListByProperty(modelhandle, propertyhandle, modelversion=None, inclu
     headers =  {'accept': 'application/json'}
     
     try:
-        result = requests.get(url = url, headers = headers)
+        retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
+        adapter = HTTPAdapter(max_retries=retry)
+        session = requests.Session()
+        session.mount('https://', adapter)
+        result = session.get(url=url, headers=headers, timeout=160)
         
         if result.status_code == 200:
             pvlist = []
@@ -463,6 +498,53 @@ def mdfAddProperty(mdfmodel, node_prop_dict, add_node = False):
 
 
 
+def mdfBuildProperty(node, prop_info):
+    '''Builds and returns an MDF Property Object
+        :param node_prop_dict: A dictionary with an individual node name as key and a list of dictionaries containing property information {nodename:[{propery_description}]}
+        :type node_prop_dict: Dictionary
+        :param property_info: A dicionary {prop:property_name, isreq: Yes or No indictating if property is required, iskey: Yes or No indicating if property is key for the node,  'val': The property data type or 'value_set' if Enums are to be added, 'desc': Property description}
+        :type property_info: Dictionary
+        :return: An MDF Property Object
+        :rtype: MDF Property object
+    '''
+    propdict = {'handle': prop_info['prop'],
+                "_parent_handle": node,
+                'is_required': prop_info['isreq'],
+                'value_domain': prop_info['val'],
+                'desc': prop_info['desc']}
+    if 'iskey' in prop_info:
+        propdict['is_key'] = prop_info['iskey']
+    propobj = Property(propdict)
+    return propobj
+
+
+
+
+def mdfAddEDP(mdfmodel, nodename, propname, edppdict):
+    """NEW!  Adds an Enum section to request an EDP association.  This should be the same as mdfAnnotateTerms but instead adds the info to an Enum section.
+    
+    :param mdfmodel: An MDF model object to which nodes will be added
+    :type mdfmodel: MDF model object
+    :param nodename: The name of the node the property belongs to
+    :type nodename: String
+    :param propname: The name of the property to add Enums
+    :type propename: String
+    :param edpdict:  A dictionary containing the information for the EDP. {'handle': property name, 'value':EDP name, 'origin_version': EDP version, 'origin_name': Source of the EDP, 'origin_id':EDP idenfier, 'origin_definition': EDP Definition}
+    :type edpdict: Dictionary
+    :return: MDF Model with ENUMS added.  Returns original model if node or property doesn't exist.
+    :rtype: MDF Model object
+    """
+    
+    if (nodename, propname) in list(mdfmodel.props):
+        termobj = Term(edppdict)
+        propobj = mdfmodel.props[(nodename, propname)]
+        if propobj.value_domain != 'value_set':
+            propobj.value_domain = 'value_set'
+        mdfmodel.add_edp_term(propobj, termobj)
+    return mdfmodel
+
+
+
         
 def mdfAddEnums(mdfmodel, nodename, propname, enumlist):
     """Adds an ENUM section to an existing property.
@@ -533,7 +615,6 @@ def mdfAddTerms(mdfmodel, nodename, propname, termdict):
             propobj.value_domain = 'value_set'
         mdfmodel.add_terms(propobj, termobj)
     return mdfmodel
-
 
 
 
@@ -685,3 +766,51 @@ def mdfWriteModelFiles(mdf, sectionlist, writedir):
     #Now write out whatever is left.  If Model is only section, it all gets printed
     filename = f"{writedir}{mdf.handle}-model.yml"
     writeYAML(filename=filename, jsonobj=mdfdict)
+
+
+
+def mdfGetEnumInfo(mdf, nodename, propname):
+    """
+    Returns the information from the Enum section of a property, if there is one.  This does NOT return any EDP permissible values.
+    
+    :param mdf: MDF Model Object
+    :type mdf: MDF model
+    :param nodename: The handle of the node for the requested property
+    :type nodename: String
+    :param propname: The handle of the property to be checked for an Enum section
+    :type propname: String
+    :return: A dictionary of the Enum section
+    :rtype: Python dicitonary or None
+    """
+    
+    propobj = mdf.props[(nodename, propname)]
+    if propobj.value_set is None:
+        return None
+    else:
+        final = []
+        for key, value in propobj.value_set.edp_terms.items():
+            final.append({key:value.get_attr_dict()})
+        return final
+
+
+def mdfGetTermInfo(mdf, nodename, propname):
+    """
+    Returns the information from the Term section of a property, if there is one.  
+    
+    :param mdf: MDF Model Object
+    :type mdf: MDF model
+    :param nodename: The handle of the node for the requested property
+    :type nodename: String
+    :param propname: The handle of the property to be checked for a Term section
+    :type propname: String
+    :return: A dictionary of the Term section
+    :rtype: Python dicitonary or None
+    """
+    propobj = mdf.props[(nodename, propname)]
+    if propobj.concept is None:
+        return None
+    else:
+        final = []
+        for key, value in propobj.concept.terms.items():
+            final.append({key:value.get_attr_dict()})
+        return final

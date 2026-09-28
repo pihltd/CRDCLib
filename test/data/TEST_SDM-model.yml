@@ -1,0 +1,47 @@
+Handle: SDM
+Version: 0.0.2
+Nodes:
+  program:
+    Tags:
+      Category: Administrative
+    Props:
+      - prg_external_url
+      - prg_full_description
+      - prg_name
+      - prg_short_description
+      - prg_short_name
+  study:
+    Tags:
+      Category: Administrative
+    Props:
+      - adult_or_pediatric_ya_study
+      - biospecimen_collection
+      - data_access_level
+      - dbgap_accession
+      - enrollment_beginning_year
+      - enrollment_ending_year
+      - funding_agency
+      - grant_number
+      - iacuc_approval_date
+      - license_type
+      - study_beginning_year
+      - study_description
+      - study_ending_year
+      - study_external_url
+      - study_name
+      - study_organism
+      - study_short_name
+      - study_status
+      - study_type
+Relationships:
+  of_study:
+    Mul: one_to_many
+    Desc: TBD
+    Props: null
+    Ends:
+      - Src: program
+        Dst: study
+        Props: null
+      - Src: study
+        Dst: study
+        Props: null

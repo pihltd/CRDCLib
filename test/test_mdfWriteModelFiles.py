@@ -1,6 +1,5 @@
 import unittest
 import bento_mdf
-from io import StringIO
 import sys
 import hashlib
 from pathlib import Path
@@ -13,7 +12,8 @@ from src.crdclib import crdclib as cl
 class TestMDFWriteModelFiles (unittest.TestCase):
     def test_mdfWriteModelFiles(self):
         TESTPATH = Path(__file__).parent
-        testfiles = [f"{TESTPATH}/data/crdc_submission.yml", f"{TESTPATH}/data/crdc_submission_properties.yml"]
+        #testfiles = [f"{TESTPATH}/data/crdc_submission.yml", f"{TESTPATH}/data/crdc_submission_properties.yml"]
+        testfiles = [f"{TESTPATH}/data/TEST_SDM-model.yml", f"{TESTPATH}/data/TEST_SDM-model-properties.yml"]
         mdf = bento_mdf.MDF(*testfiles)
         sections = ['Model']
 
@@ -23,7 +23,7 @@ class TestMDFWriteModelFiles (unittest.TestCase):
             filedata = f.read()
             newmd5hash = hashlib.md5(filedata).hexdigest()        
 
-        with open(f"{TESTPATH}/data/TEST_crdc_submission.yml", 'rb') as g:
+        with open(f"{TESTPATH}/data/SDM-model.yml", 'rb') as g:
             oldfiledata = g.read()
             oldmd5hash = hashlib.md5(oldfiledata).hexdigest()
 

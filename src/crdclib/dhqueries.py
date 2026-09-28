@@ -186,3 +186,56 @@ study_query = """
   }
 }
 """
+
+released_study_query = """
+query ListReleasedStudies(
+  $displayname: [String]!
+  $first: Int
+  $offset: Int
+){
+  listReleasedStudies(
+    dataCommonsDisplayNames: $displayname
+    first: $first
+    offset: $offset
+  ){
+    studies{
+      _id
+      studyName
+      studyAbbreviation
+      dataCommons
+    }
+  }
+}
+"""
+
+
+program_study_query = """
+{
+  listPrograms{
+    programs{
+      name
+      studies{
+        studyAbbreviation
+        studyName
+      }
+    }
+  }
+}
+"""
+
+node_count_query = """
+query GetReleasedNodes(
+  $dc: String!
+  $studyID: String!
+){
+  getReleaseNodeTypes(
+    dataCommonsDisplayName: $dc
+    studyID: $studyID
+  ){
+    nodes{
+      name
+      count
+    }
+  }
+}
+"""

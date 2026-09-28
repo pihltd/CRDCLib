@@ -16,6 +16,5 @@ class TestGetCDERecord(unittest.TestCase):
         badref = cl.getCDERecord(bad_id, cde_version)
         self.assertEqual(badref['apiResponse']['type'], 'E')
 
-
 if __name__ == "__main__":
     unittest.main(verbosity=2)

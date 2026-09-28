@@ -1,0 +1,349 @@
+PropDefinitions:
+  acquisition_method_other_specify:
+    Tags:
+      Template: 'No'
+    Req: 'No'
+    Key: 'No'
+    Type: nan
+  prg_external_url:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Program External URL Text
+      Origin: caDSR
+      Version: '1'
+      Code: 17087631
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Program External URL Text
+      Origin: EDP
+      Version: '1'
+      Code: 17087631
+  prg_full_description:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Program Full Description Text
+      Origin: caDSR
+      Version: '1'
+      Code: 17087562
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Program Full Description Text
+      Origin: EDP
+      Version: '1'
+      Code: 17087562
+  prg_name:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Program Name
+      Origin: caDSR
+      Version: '1'
+      Code: 15846335
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Program Name
+      Origin: EDP
+      Version: '1'
+      Code: 15846335
+  prg_short_description:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Program Short Description Text
+      Origin: caDSR
+      Version: '1'
+      Code: 17087559
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Program Short Description Text
+      Origin: EDP
+      Version: '1'
+      Code: 17087559
+  prg_short_name:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Program Short Name
+      Origin: caDSR
+      Version: '1'
+      Code: 15846845
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Program Short Name
+      Origin: EDP
+      Version: '1'
+      Code: 15846845
+  adult_or_pediatric_ya_study:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Legal Adult Or Pediatric Study Type
+      Origin: caDSR
+      Version: '3'
+      Code: 11524549
+    Req: 'No'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Legal Adult Or Pediatric Study Type
+      Origin: EDP
+      Version: '3'
+      Code: 11524549
+  biospecimen_collection:
+    Tags:
+      Template: 'Yes'
+    Term:
+    - Value: Research Activity Biospecimen Collection Indicator
+      Origin: caDSR
+      Version: '1'
+      Code: 16979768
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Research Activity Biospecimen Collection Indicator
+      Origin: EDP
+      Version: '1'
+      Code: 16979768
+  data_access_level:
+    Tags:
+      Template: 'No'
+    Req: 'Yes'
+    Key: 'No'
+    Type: enum
+  dbgap_accession:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Research Activity dbGaP Accession Number Identifier
+      Origin: caDSR
+      Version: '1'
+      Code: 11524544
+    Req: 'No'
+    Key: 'No'
+    Enum:
+    - Value: Research Activity dbGaP Accession Number Identifier
+      Origin: EDP
+      Version: '1'
+      Code: 11524544
+  enrollment_beginning_year:
+    Tags:
+      Template: 'Yes'
+    Term:
+    - Value: Research Activity Study Enrollment Start Year Date
+      Origin: caDSR
+      Version: '1'
+      Code: 16979766
+    Req: 'No'
+    Key: 'No'
+    Enum:
+    - Value: Research Activity Study Enrollment Start Year Date
+      Origin: EDP
+      Version: '1'
+      Code: 16979766
+  enrollment_ending_year:
+    Tags:
+      Template: 'Yes'
+    Term:
+    - Value: Research Activity Study Enrollment End Year Date
+      Origin: caDSR
+      Version: '1'
+      Code: 16979767
+    Req: 'No'
+    Key: 'No'
+    Enum:
+    - Value: Research Activity Study Enrollment End Year Date
+      Origin: EDP
+      Version: '1'
+      Code: 16979767
+  funding_agency:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Funding Agency Organization Name
+      Origin: caDSR
+      Version: '1'
+      Code: 16002760
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Funding Agency Organization Name
+      Origin: EDP
+      Version: '1'
+      Code: 16002760
+  grant_number:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Grant Funding Number Identifier
+      Origin: caDSR
+      Version: '1'
+      Code: 16002823
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Grant Funding Number Identifier
+      Origin: EDP
+      Version: '1'
+      Code: 16002823
+  iacuc_approval_date:
+    Tags:
+      Template: 'Yes'
+    Term:
+    - Value: Study Administration IACUC Approval Date
+      Origin: caDSR
+      Version: '1'
+      Code: 17545139
+    Req: 'No'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration IACUC Approval Date
+      Origin: EDP
+      Version: '1'
+      Code: 17545139
+  license_type:
+    Tags:
+      Template: 'Yes'
+    Term:
+    - Value: Data File Dataset License Type
+      Origin: caDSR
+      Version: '1'
+      Code: 14902606
+    Req: 'No'
+    Key: 'No'
+    Enum:
+    - Value: Data File Dataset License Type
+      Origin: EDP
+      Version: '1'
+      Code: 14902606
+  study_beginning_year:
+    Tags:
+      Template: 'Yes'
+    Term:
+    - Value: Study Administration Study Start Year Date
+      Origin: caDSR
+      Version: '1'
+      Code: 15607845
+    Req: 'No'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Study Start Year Date
+      Origin: EDP
+      Version: '1'
+      Code: 15607845
+  study_description:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Research Activity Study Description Text
+      Origin: caDSR
+      Version: '1'
+      Code: 16188024
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Research Activity Study Description Text
+      Origin: EDP
+      Version: '1'
+      Code: 16188024
+  study_ending_year:
+    Tags:
+      Template: 'Yes'
+    Term:
+    - Value: Study Administration Study End Year Date
+      Origin: caDSR
+      Version: '1'
+      Code: 15607913
+    Req: 'No'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Study End Year Date
+      Origin: EDP
+      Version: '1'
+      Code: 15607913
+  study_external_url:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Program External URL Text
+      Origin: caDSR
+      Version: '1'
+      Code: 17087631
+    Req: 'No'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Program External URL Text
+      Origin: EDP
+      Version: '1'
+      Code: 17087631
+  study_name:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Study Name Text
+      Origin: caDSR
+      Version: '4'
+      Code: 11459810
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Study Name Text
+      Origin: EDP
+      Version: '4'
+      Code: 11459810
+  study_organism:
+    Tags:
+      Template: 'No'
+    Req: 'Yes'
+    Key: 'No'
+    Type: byref
+  study_short_name:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Administration Study Short Name Text
+      Origin: caDSR
+      Version: '4'
+      Code: 11459812
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Study Short Name Text
+      Origin: EDP
+      Version: '4'
+      Code: 11459812
+  study_status:
+    Tags:
+      Template: 'Yes'
+    Term:
+    - Value: Study Administration Study Status
+      Origin: caDSR
+      Version: '1'
+      Code: 15607838
+    Req: 'No'
+    Key: 'No'
+    Enum:
+    - Value: Study Administration Study Status
+      Origin: EDP
+      Version: '1'
+      Code: 15607838
+  study_type:
+    Tags:
+      Template: 'No'
+    Term:
+    - Value: Study Primary Purpose Type
+      Origin: caDSR
+      Version: '1'
+      Code: 11160683
+    Req: 'Yes'
+    Key: 'No'
+    Enum:
+    - Value: Study Primary Purpose Type
+      Origin: EDP
+      Version: '1'
+      Code: 11160683
