@@ -731,7 +731,7 @@ def mdfBuildLoadSheets(mdf, reverse=False, typecolumn=False):
 
 
 
-def mdfWriteModelFiles(mdf, sectionlist, writedir):
+def mdfWriteModelFiles(mdf, sectionlist, writedir, filenamedict=None):
     """
     Writes out an mdf model object to one or more YAML files.  Does some sorting to get the YAML in proper order (Handle/Version/Nodes/Properties)
 
@@ -741,6 +741,8 @@ def mdfWriteModelFiles(mdf, sectionlist, writedir):
     :type sectionlist: List
     :param writedir: The direcotory to write the MDF files into
     :type writedir: String
+    :param filenamedict: A dictionary of {'model': <full path filename>}
+    :type filenamedict: Python dictionary
     """
 
     tempdict = MDFWriter(mdf).mdf
@@ -759,12 +761,21 @@ def mdfWriteModelFiles(mdf, sectionlist, writedir):
         for section in sectionlist:
             if section in allowedsectionlist:
                 if section != 'Model':
-                    filename = f"{writedir}{mdf.handle}-model-{section.lower()}.yml"
+                    if filenamedict is not None:
+                        if section.lower() in filenamedict:
+                            filename = f"{writedir}{filenamedict[section.lower()]}"
+                        else:
+                            filename = f"{writedir}{mdf.handle}-model-{section.lower()}.yml"
+                    else:
+                        filename = f"{writedir}{mdf.handle}-model-{section.lower()}.yml"
                     printnode = {}
                     printnode[section] = mdfdict.pop(section, None)
                     writeYAML(filename=filename, jsonobj=printnode)
     #Now write out whatever is left.  If Model is only section, it all gets printed
-    filename = f"{writedir}{mdf.handle}-model.yml"
+    if filenamedict is not None:
+        filename = f"{filenamedict['model']}"
+    else:
+        filename = f"{writedir}{mdf.handle}-model.yml"
     writeYAML(filename=filename, jsonobj=mdfdict)
 
 

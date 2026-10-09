@@ -16,16 +16,25 @@ class TestMDFWriteModelFiles (unittest.TestCase):
         testfiles = [f"{TESTPATH}/data/TEST_SDM-model.yml", f"{TESTPATH}/data/TEST_SDM-model-properties.yml"]
         mdf = bento_mdf.MDF(*testfiles)
         sections = ['Model']
-
+        filenamedict = {'model':f"{TESTPATH}/output/staticname.yml"}
+        
         cl.mdfWriteModelFiles(mdf=mdf, writedir=f"{TESTPATH}/output/", sectionlist=sections)
-
+        
         with open(f"{TESTPATH}/output/{mdf.handle}-model.yml", 'rb') as f:
             filedata = f.read()
-            newmd5hash = hashlib.md5(filedata).hexdigest()        
-
+            newmd5hash = hashlib.md5(filedata).hexdigest()
+            
         with open(f"{TESTPATH}/data/SDM-model.yml", 'rb') as g:
             oldfiledata = g.read()
             oldmd5hash = hashlib.md5(oldfiledata).hexdigest()
 
         self.assertEqual(newmd5hash, oldmd5hash)
+        
+        cl.mdfWriteModelFiles(mdf=mdf, writedir=f"{TESTPATH}/output/", sectionlist=sections, filenamedict=filenamedict)
+        
+        with open(filenamedict['model'], 'rb') as s:
+            staticdata = s.read()
+            newstatichash = hashlib.md5(staticdata).hexdigest()
+        
+        self.assertEqual(newstatichash, oldmd5hash)
 
