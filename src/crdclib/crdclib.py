@@ -86,12 +86,13 @@ def getCDERecord(cde_id, cde_version=None):
 
 def getCDEInfo(cdeid, version=None):
     """Instead of the full record, this just returns the CDE Name, CDE Definition, and CDE version.  If no version is supplied, the latest version is returned.  Used mostly in conjunction with MDF models.
+    Updated to include CDE Type, which has "Enumerated" as a value if htere is a PV list, and CDE Data Type which is the normal data type for the field, like Character.
 
     :param cde_id: CDE Public identifier
     :type cde_id: Integer
     :param cde_version: The version of the CDE to be queried.  If not supplied the latest version will be returned
     :type cde_version: String, optional
-    :rtype: Dictionary ('cdename':name of the CDE, 'cdedef': CDE defintion, 'cdever': CDE version)
+    :rtype: Dictionary ('cdename':name of the CDE, 'cdedef': CDE defintion, 'cdever': CDE version, 'cdetype': CDE Type (Enumerated, etc), 'cdedatatype': CDE Data type (Char, etc.))
     """
 
     definition = None
@@ -123,9 +124,17 @@ def getCDEInfo(cdeid, version=None):
             else:
                 definition = results['DataElement']['definition']
             cdeversion = results['DataElement']['version']
+            if 'type' in results['DataElement']['ValueDomain']:
+                cdetype = results['DataElement']['ValueDomain']['type']
+            else:
+                cdetype = None
+            if 'dataType' in results['DataElement']['ValueDomain']:
+                cdedatatype = results['DataElement']['ValueDomain']['dataType']
+            else:
+                cdedatatype = None
     else:
         cdename = 'caDSR Name Error'
-    return {'cdename':cdename, 'cdedef':definition, 'cdever':cdeversion}
+    return {'cdename':cdename, 'cdedef':definition, 'cdever':cdeversion, 'cdetype': cdetype, 'cdedatatype': cdedatatype}
 
 
 
@@ -772,7 +781,7 @@ def mdfWriteModelFiles(mdf, sectionlist, writedir, filenamedict=None):
                     writeYAML(filename=filename, jsonobj=printnode)
     #Now write out whatever is left.  If Model is only section, it all gets printed
     if filenamedict is not None:
-        filename = f"{filenamedict['model']}"
+        filename = f"{writedir}{filenamedict['model']}"
     else:
         filename = f"{writedir}{mdf.handle}-model.yml"
     writeYAML(filename=filename, jsonobj=mdfdict)
