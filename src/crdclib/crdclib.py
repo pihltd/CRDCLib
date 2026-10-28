@@ -179,9 +179,9 @@ def getCDEPVList(cdeid, version=None):
 def runBentoAPIQuery(url, query, variables=None):
     """Runs a GrpahQL Query against the Bento instance specified in the URL
     
-    :param url: URL of the Bento instance API
+    :param url: URL of the Bento instance API.  Using "gc", "ctdc", or "icdc" will use the correct URL for those DCs automatically
     :type url: URL
-    :param query: A valid GraphQL query
+    :param query: A valid GraphQL query. 
     :type query: String
     :param variables: a JSON object containing any variables for the provided query
     :type variables: dictionary, optional
@@ -193,6 +193,15 @@ def runBentoAPIQuery(url, query, variables=None):
     :rtype: request.HTTPError
     """
     
+    urllist = {
+        'gc': "https://general.datacommons.cancer.gov/v1/graphql/",
+        'ctdc': "https://clinical.datacommons.cancer.gov/v1/graphql/",
+        'icdc': "https://caninecommons.cancer.gov/v1/graphql/"
+    }
+    
+    if url in urllist.keys():
+        url = urllist[url]
+        
     headers = {'accept': 'application/json'}
     try:
         retry = Retry(total=5, backoff_factor=2, status_forcelist=[429, 500, 502, 503, 504])
